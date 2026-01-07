@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aetheria Notes</title>
+    <title>Aetheria Ultra</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:wght@700&family=Roboto+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -12,75 +12,82 @@
     <style>
         :root { --bg: #0a111f; --card: #141d2e; --brilho: #0ea5e9; --texto: #f1f5f9; --borda: rgba(255, 255, 255, 0.1); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--texto); min-height: 100vh; overflow: hidden; position: relative; }
+        body { background: var(--bg); color: var(--texto); min-height: 100vh; overflow: hidden; }
 
-        /* Estrutura de Telas */
-        .tela { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; background: var(--bg); z-index: 1; overflow-y: auto; }
-        .tela.ativa { display: flex; animation: fadeIn 0.4s forwards; }
+        .tela { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; background: var(--bg); z-index: 1; }
+        .tela.ativa { display: flex; animation: fadeIn 0.3s forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Login Premium */
+        /* Login & Frases */
         .flex-center { align-items: center; justify-content: center; text-align: center; padding: 25px; }
-        .login-box { background: var(--card); padding: 40px; border-radius: 30px; border: 1px solid var(--borda); width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .input-estilizado { width: 100%; background: #050a14; border: 1px solid var(--borda); padding: 18px; border-radius: 15px; color: white; margin-bottom: 20px; text-align: center; font-size: 1.1rem; outline: none; }
-        .btn-acesso { background: var(--brilho); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .logo-text { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--brilho); text-shadow: 0 0 20px rgba(14,165,233,0.4); margin-bottom: 10px; }
+        .login-box { background: var(--card); padding: 40px; border-radius: 30px; border: 1px solid var(--borda); width: 100%; max-width: 400px; }
+        .input-estilizado { width: 100%; background: #050a14; border: 1px solid var(--borda); padding: 18px; border-radius: 15px; color: white; margin-bottom: 20px; outline: none; text-align: center; }
+        .btn-acesso { background: var(--brilho); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; }
 
         /* Dashboard */
         .header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
-        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); min-height: 110px; cursor: pointer; transition: 0.3s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; overflow-y: auto; }
+        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); cursor: pointer; position: relative; }
+        .card-nota h4 { font-size: 1rem; margin-bottom: 5px; color: var(--brilho); }
+        .card-nota small { opacity: 0.5; font-size: 0.7rem; }
+
+        /* Toolbar Ultra */
+        .toolbar { background: #070d17; padding: 8px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--borda); scrollbar-width: none; }
+        .toolbar::-webkit-scrollbar { display: none; }
+        .group { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; gap: 4px; align-items: center; }
+        .btn-t { background: transparent; border: none; color: white; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-t:active { background: var(--brilho); }
+        .select-f { background: #141d2e; color: white; border: none; padding: 5px; border-radius: 5px; font-size: 0.7rem; outline: none; }
+        .input-color { width: 30px; height: 30px; border: none; background: transparent; cursor: pointer; }
+
+        /* Editor */
+        .editor-container { flex: 1; display: flex; flex-direction: column; overflow-y: auto; background: var(--bg); transition: 0.3s; }
+        .area-escrita { padding: 30px; max-width: 800px; margin: 0 auto; width: 100%; min-height: 100%; }
+        #input-titulo { width: 100%; background: transparent; border: none; color: var(--brilho); font-size: 2rem; font-weight: 800; outline: none; margin-bottom: 10px; }
+        #area-texto { outline: none; font-size: 16px; line-height: 1.8; min-height: 300px; color: var(--texto); }
         
-        /* Barra de Ferramentas Corrigida */
-        .barra-ferramentas { background: #070d17; padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
-        .barra-ferramentas::-webkit-scrollbar { display: none; }
-        .group { display: flex; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 10px; gap: 5px; align-items: center; white-space: nowrap; }
-        .btn-t { background: transparent; border: none; color: white; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .select-f { background: #141d2e; color: white; border: 1px solid var(--borda); padding: 5px; border-radius: 8px; font-size: 0.75rem; outline: none; }
-        
-        /* Área de Escrita */
-        .area-escrita { padding: 25px; flex: 1; display: flex; flex-direction: column; }
-        #input-titulo { width: 100%; background: transparent; border: none; color: inherit; font-size: 1.8rem; font-weight: 800; outline: none; margin-bottom: 15px; }
-        #area-texto { min-height: 50vh; outline: none; font-size: 16px; line-height: 1.6; color: inherit; }
-        
-        footer { padding: 30px; text-align: center; border-top: 1px solid var(--borda); opacity: 0.5; font-size: 0.8rem; }
+        .status-bar { padding: 10px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--borda); font-size: 0.7rem; display: flex; justify-content: space-between; opacity: 0.6; }
     </style>
 </head>
 <body>
 
     <div id="tela-login" class="tela flex-center ativa">
         <div class="login-box">
-            <img src="https://i.ibb.co/m0S9P3T/aetheria-logo.png" alt="Aetheria Logo" style="width: 100px; margin-bottom: 20px;">
-            <h1 style="font-family: 'Playfair Display', serif; letter-spacing: 2px;">Aetheria</h1>
-            <p style="margin-bottom: 30px; opacity: 0.6;">by Jefferson Dias Software</p>
-            <input type="text" id="user-input" class="input-estilizado" placeholder="Seu nome">
-            <button onclick="app.fazerLogin()" class="btn-acesso">ENTRAR NO APP</button>
+            <div class="logo-text">A</div>
+            <h1 style="margin-bottom: 5px;">Aetheria</h1>
+            <p style="opacity: 0.5; margin-bottom: 30px;">Jefferson Dias Software</p>
+            <input type="text" id="user-input" class="input-estilizado" placeholder="Como deseja ser chamado?">
+            <button onclick="app.fazerLogin()" class="btn-acesso">INICIAR EXPERIÊNCIA</button>
         </div>
     </div>
 
-    <div id="tela-frase" class="tela flex-center">
-        <div class="caixa-frase">
-            <h2 id="msg-frase" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 15px; font-weight: 300;"></h2>
-            <p id="msg-autor" style="color: var(--brilho); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;"></p>
+    <div id="tela-frase" class="tela flex-center" style="background: #000;">
+        <div style="padding: 40px;">
+            <h2 id="msg-frase" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; font-weight: 400; margin-bottom: 20px;"></h2>
+            <p id="msg-autor" style="color: var(--brilho); font-weight: 800; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px;"></p>
         </div>
     </div>
 
     <div id="tela-dash" class="tela">
         <div class="header">
-            <h2 id="ola-user">Olá</h2>
+            <div>
+                <h2 id="ola-user">Olá</h2>
+                <small id="data-atual"></small>
+            </div>
             <button class="btn-t" onclick="app.fazerLogout()"><i class="fa-solid fa-power-off" style="color:#ef4444"></i></button>
         </div>
         <div style="padding: 20px;">
-            <div onclick="app.novaNota()" style="background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; font-weight: 800;">
+            <button onclick="app.novaNota()" style="width:100%; background: linear-gradient(135deg, #0ea5e9, #2563eb); border: none; color: white; padding: 25px; border-radius: 20px; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 10px 30px rgba(14,165,233,0.3);">
                 <i class="fa-solid fa-plus-circle"></i> NOVO DOCUMENTO
-            </div>
+            </button>
         </div>
         <div id="grade-notas" class="grid"></div>
-        <footer>Jefferson Dias &copy; 2026</footer>
     </div>
 
     <div id="tela-editor" class="tela">
-        <div class="barra-ferramentas">
-            <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="toolbar">
+            <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-arrow-left"></i></button>
             
             <div class="group">
                 <select class="select-f" onchange="app.exec('fontName', this.value)">
@@ -92,35 +99,54 @@
             </div>
 
             <div class="group">
-                <button class="btn-t" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
-                <button class="btn-t" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
+                <button class="btn-t" onclick="app.exec('italic')"><i class="fa-solid fa-italic"></i></button>
+                <button class="btn-t" onclick="app.exec('underline')"><i class="fa-solid fa-underline"></i></button>
             </div>
 
             <div class="group">
-                <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
+                <button class="btn-t" onclick="app.exec('justifyLeft')"><i class="fa-solid fa-align-left"></i></button>
+                <button class="btn-t" onclick="app.exec('justifyCenter')"><i class="fa-solid fa-align-center"></i></button>
                 <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
-                <button class="btn-t" onclick="app.compartilharNota()" title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button>
-                <button class="btn-t" onclick="app.exportarPDF()" title="Exportar PDF"><i class="fa-solid fa-file-pdf"></i></button>
+            </div>
+
+            <div class="group">
+                <i class="fa-solid fa-font" style="font-size: 0.6rem; margin-left: 5px;"></i>
+                <input type="color" class="input-color" onchange="app.exec('foreColor', this.value)" title="Cor da Letra">
+                <i class="fa-solid fa-highlighter" style="font-size: 0.6rem;"></i>
+                <input type="color" class="input-color" onchange="app.exec('backColor', this.value)" title="Grifar">
+            </div>
+
+            <div class="group">
+                <button class="btn-t" onclick="app.compartilharNota()"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="btn-t" onclick="app.exportarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
             </div>
 
             <button class="btn-t" style="margin-left: auto;" onclick="app.deletar()"><i class="fa-solid fa-trash" style="color:#ef4444"></i></button>
         </div>
-        
-        <div id="capture-area" class="area-escrita">
-            <input type="text" id="input-titulo" oninput="app.salvar()" placeholder="Título...">
-            <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
+
+        <div class="editor-container" id="container-editor">
+            <div class="area-escrita" id="capture-area">
+                <input type="text" id="input-titulo" oninput="app.salvar()" placeholder="Sem título">
+                <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span id="contagem">Palavras: 0 | Caracteres: 0</span>
+            <span id="status-salvamento">Salvo automaticamente</span>
         </div>
     </div>
 
     <script>
         const app = {
-            db: JSON.parse(localStorage.getItem('inf_db')) || [],
-            user: localStorage.getItem('inf_user'),
+            db: JSON.parse(localStorage.getItem('aetheria_db')) || [],
+            user: localStorage.getItem('aetheria_user'),
             idAtual: null,
-            fSize: 16,
 
             init() {
                 if (this.user) { this.renderDash(); this.irPara('tela-dash'); }
+                document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             },
 
             irPara(id) {
@@ -130,29 +156,30 @@
 
             fazerLogin() {
                 const n = document.getElementById('user-input').value;
-                if (!n) return;
+                if (!n) return alert("Por favor, digite seu nome.");
                 this.user = n;
-                localStorage.setItem('inf_user', n);
+                localStorage.setItem('aetheria_user', n);
                 this.animarFrase("entrada");
             },
 
             fazerLogout() {
-                if(confirm("Deseja sair do Aetheria?")) this.animarFrase("saida");
+                if(confirm("Deseja encerrar a sessão?")) {
+                    localStorage.removeItem('aetheria_user');
+                    location.reload();
+                }
             },
 
             animarFrase(tipo) {
                 const frases = [
-                    {t: "A persistência é o caminho do êxito.", a: "Chaplin"},
-                    {t: "A mente que se abre nunca mais volta ao normal.", a: "Einstein"}
+                    {t: "A escrita é a pintura da voz.", a: "Voltaire"},
+                    {t: "Sua mente é um universo infinito.", a: "Aetheria"},
+                    {t: "Ideias mudam o mundo.", a: "Jefferson Dias"}
                 ];
                 const f = frases[Math.floor(Math.random()*frases.length)];
                 document.getElementById('msg-frase').innerText = `"${f.t}"`;
                 document.getElementById('msg-autor').innerText = f.a;
                 this.irPara('tela-frase');
-                setTimeout(() => {
-                    if(tipo === "entrada") { this.renderDash(); this.irPara('tela-dash'); }
-                    else { localStorage.removeItem('inf_user'); location.reload(); }
-                }, 2500);
+                setTimeout(() => { this.renderDash(); this.irPara('tela-dash'); }, 2500);
             },
 
             renderDash() {
@@ -160,14 +187,16 @@
                 const grid = document.getElementById('grade-notas');
                 grid.innerHTML = this.db.map(n => `
                     <div class="card-nota" onclick="app.abrirNota(${n.id})">
-                        <h4 style="color:var(--brilho)">${n.tit || 'Documento sem título'}</h4>
+                        <h4>${n.tit || 'Nota vazia'}</h4>
+                        <small>${n.data}</small>
                     </div>
                 `).join('');
             },
 
             novaNota() {
                 const id = Date.now();
-                this.db.unshift({ id, tit: '', txt: '' });
+                const data = new Date().toLocaleDateString();
+                this.db.unshift({ id, tit: '', txt: '', data });
                 this.abrirNota(id);
             },
 
@@ -176,6 +205,7 @@
                 const n = this.db.find(x => x.id === id);
                 document.getElementById('input-titulo').value = n.tit;
                 document.getElementById('area-texto').innerHTML = n.txt;
+                this.atualizarContagem();
                 this.irPara('tela-editor');
             },
 
@@ -184,15 +214,25 @@
                 if (n) {
                     n.tit = document.getElementById('input-titulo').value;
                     n.txt = document.getElementById('area-texto').innerHTML;
-                    localStorage.setItem('inf_db', JSON.stringify(this.db));
+                    localStorage.setItem('aetheria_db', JSON.stringify(this.db));
+                    this.atualizarContagem();
+                    
+                    const status = document.getElementById('status-salvamento');
+                    status.innerText = "Salvando...";
+                    setTimeout(() => status.innerText = "Alterações salvas", 1000);
                 }
             },
 
-            exec(c, v = null) { document.execCommand(c, false, v); this.salvar(); },
+            atualizarContagem() {
+                const texto = document.getElementById('area-texto').innerText || "";
+                const palavras = texto.trim() ? texto.trim().split(/\s+/).length : 0;
+                const chars = texto.length;
+                document.getElementById('contagem').innerText = `Palavras: ${palavras} | Caracteres: ${chars}`;
+            },
 
-            ajustarFonte(v) {
-                this.fSize += v;
-                document.getElementById('area-texto').style.fontSize = this.fSize + 'px';
+            exec(c, v = null) { 
+                document.execCommand(c, false, v); 
+                this.salvar(); 
             },
 
             async compartilharNota() {
@@ -200,19 +240,30 @@
                 const texto = document.getElementById('area-texto').innerText;
                 if (navigator.share) {
                     try {
-                        await navigator.share({ title: n.tit || 'Aetheria Note', text: `${n.tit}\n\n${texto}` });
-                    } catch (e) { console.log(e); }
+                        await navigator.share({ title: n.tit || 'Nota Aetheria', text: `${n.tit}\n\n${texto}` });
+                    } catch (e) { console.log("Erro ao partilhar"); }
                 }
             },
 
             exportarPDF() {
                 const element = document.getElementById('capture-area');
-                const opt = { margin: 10, filename: 'aetheria_nota.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+                const opt = { 
+                    margin: 15, 
+                    filename: 'Aetheria_Document.pdf', 
+                    html2canvas: { scale: 2 }, 
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+                };
                 html2pdf().set(opt).from(element).save();
             },
 
             voltar() { this.renderDash(); this.irPara('tela-dash'); },
-            deletar() { if(confirm("Apagar permanentemente?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('inf_db', JSON.stringify(this.db)); this.voltar(); } }
+            deletar() { 
+                if(confirm("Excluir esta nota permanentemente?")) { 
+                    this.db = this.db.filter(x => x.id !== this.idAtual); 
+                    localStorage.setItem('aetheria_db', JSON.stringify(this.db)); 
+                    this.voltar(); 
+                } 
+            }
         };
         app.init();
     </script>
