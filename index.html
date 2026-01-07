@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aetheria Ultra</title>
+    <title>Aetheria Professional</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:wght@700;900&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:wght@700;900&family=Roboto+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -14,161 +14,146 @@
             --bg: #0a111f; --card: #141d2e; --brilho: #0ea5e9; --texto: #f1f5f9; --borda: rgba(255, 255, 255, 0.1); --toolbar: #070d17;
         }
         [data-tema="claro"] {
-            --bg: #f1f5f9; --card: #ffffff; --brilho: #2563eb; --texto: #1e293b; --borda: rgba(0, 0, 0, 0.1); --toolbar: #f8fafc;
+            --bg: #f8fafc; --card: #ffffff; --brilho: #2563eb; --texto: #1e293b; --borda: rgba(0, 0, 0, 0.1); --toolbar: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: var(--texto); min-height: 100vh; overflow: hidden; transition: 0.3s; }
 
+        /* Utilitários */
         .tela { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; background: var(--bg); z-index: 1; overflow-y: auto; }
         .tela.ativa { display: flex; animation: fadeIn 0.3s forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Login */
-        .login-container { text-align: center; padding: 40px; }
-        .logo-letras { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: var(--brilho); letter-spacing: -2px; margin-bottom: 10px; }
-        .input-estilizado { width: 100%; max-width: 300px; background: var(--card); border: 1px solid var(--borda); padding: 18px; border-radius: 15px; color: var(--texto); margin-bottom: 20px; outline: none; text-align: center; font-size: 1rem; }
-        .btn-primario { background: var(--brilho); color: white; border: none; padding: 18px 40px; border-radius: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        /* Login Premium */
+        .login-box { text-align: center; padding: 40px; max-width: 400px; margin: auto; background: var(--card); border-radius: 30px; border: 1px solid var(--borda); }
+        .google-btn { background: white; color: #444; padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; border: 1px solid #ddd; margin-top: 20px; text-decoration: none; }
 
-        /* Dash */
-        .header { padding: 25px; border-bottom: 1px solid var(--borda); display: flex; justify-content: space-between; align-items: center; }
-        .user-info h2 { font-size: 1.5rem; font-weight: 800; }
-        .user-info small { color: var(--brilho); font-weight: 600; text-transform: uppercase; font-size: 0.65rem; }
+        /* Header Dash */
+        .header { padding: 20px; border-bottom: 1px solid var(--borda); display: flex; justify-content: space-between; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
+        .card-nota { background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid var(--borda); cursor: pointer; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
-        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); cursor: pointer; position: relative; }
-        .card-nota h4 { font-size: 1rem; margin-bottom: 5px; color: var(--brilho); }
-        .card-nota span { font-size: 0.7rem; opacity: 0.5; }
-
-        /* Editor Barra */
-        .toolbar { background: var(--toolbar); padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--borda); sticky; top: 0; z-index: 100; }
+        /* Barra de Ferramentas Ultra */
+        .toolbar { background: var(--toolbar); padding: 8px; display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--borda); sticky; top: 0; z-index: 10; white-space: nowrap; }
         .toolbar::-webkit-scrollbar { display: none; }
-        .btn-tool { background: transparent; border: none; color: var(--texto); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-        .btn-tool:hover { background: rgba(128,128,128,0.1); }
-        .group { display: flex; background: rgba(128,128,128,0.08); padding: 4px; border-radius: 12px; gap: 2px; align-items: center; }
+        .group { display: flex; background: rgba(128,128,128,0.1); padding: 4px; border-radius: 10px; gap: 4px; align-items: center; }
+        .btn-t { background: transparent; border: none; color: var(--texto); width: 34px; height: 34px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+        .btn-t:hover { background: var(--brilho); color: white; }
         
-        .input-cor { width: 30px; height: 30px; border: none; background: transparent; cursor: pointer; }
-        .select-font { background: transparent; color: var(--texto); border: none; font-size: 0.8rem; padding: 5px; outline: none; font-weight: 600; }
+        .input-inline { background: transparent; border: none; color: var(--texto); width: 45px; text-align: center; font-weight: 800; }
+        .c-picker { width: 24px; height: 24px; border: none; background: transparent; cursor: pointer; }
 
-        /* Area Texto */
-        .editor-workspace { flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; }
-        #titulo-nota { width: 100%; background: transparent; border: none; color: var(--brilho); font-size: 2.2rem; font-weight: 900; outline: none; margin-bottom: 15px; font-family: 'Playfair Display', serif; }
-        #corpo-nota { flex: 1; outline: none; line-height: 1.8; min-height: 400px; font-size: 18px; }
+        /* Editor */
+        #editor-container { flex: 1; padding: 25px; overflow-y: auto; }
+        #titulo-nota { width: 100%; background: transparent; border: none; color: var(--brilho); font-size: 1.8rem; font-weight: 900; outline: none; margin-bottom: 10px; }
+        #area-texto { outline: none; min-height: 400px; line-height: 1.6; font-size: 18px; }
+        #area-texto img { max-width: 100%; border-radius: 10px; margin: 10px 0; }
 
-        /* Status */
-        .footer-status { padding: 10px 25px; border-top: 1px solid var(--borda); font-size: 0.75rem; display: flex; justify-content: space-between; opacity: 0.6; font-weight: 600; }
+        .modelos-label { padding: 0 20px; font-size: 0.8rem; font-weight: 800; opacity: 0.6; margin-top: 10px; }
     </style>
 </head>
-<body>
+<body data-tema="escuro">
 
     <div id="tela-login" class="tela ativa flex-center">
-        <div class="login-container">
-            <div class="logo-letras">A</div>
-            <h1 style="font-weight: 900; letter-spacing: 4px; margin-bottom: 5px;">AETHERIA</h1>
-            <p style="opacity: 0.5; font-size: 0.9rem; margin-bottom: 40px;">Jefferson Dias Software | Ultra Note</p>
-            <input type="text" id="user-input" class="input-estilizado" placeholder="Digite seu nome">
-            <br>
-            <button onclick="app.fazerLogin()" class="btn-primario">Acessar Bloco</button>
-        </div>
-    </div>
-
-    <div id="tela-frase" class="tela flex-center" style="background: #000; color: #fff; text-align: center;">
-        <div style="padding: 40px;">
-            <i class="fa-solid fa-quote-left" style="color: var(--brilho); font-size: 2rem; margin-bottom: 20px;"></i>
-            <h2 id="msg-frase" style="font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; line-height: 1.4;"></h2>
-            <p id="msg-autor" style="margin-top: 20px; color: var(--brilho); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.7rem;"></p>
+        <div class="login-box">
+            <h1 style="font-family:'Playfair Display'; font-size: 2.5rem;">Aetheria</h1>
+            <p style="opacity:0.6">Seu universo de notas</p>
+            <input type="text" id="user-input" style="width:100%; padding:15px; margin-top:20px; border-radius:10px; border:1px solid var(--borda); background:rgba(0,0,0,0.2); color:white; text-align:center;" placeholder="Nome de usuário">
+            <button onclick="app.fazerLogin()" style="width:100%; padding:15px; margin-top:10px; border-radius:10px; background:var(--brilho); color:white; border:none; font-weight:800;">ENTRAR</button>
+            <div class="google-btn" onclick="app.fazerLogin()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18"> Entrar com Google
+            </div>
         </div>
     </div>
 
     <div id="tela-dash" class="tela">
         <div class="header">
-            <div class="user-info">
-                <h2 id="txt-ola">Olá</h2>
-                <small id="txt-acesso"></small>
+            <div>
+                <h2 id="ola-user">Olá</h2>
+                <small id="data-acesso" style="color:var(--brilho)"></small>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-tool" onclick="app.alternarTema()"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <button class="btn-tool" onclick="app.fazerLogout()"><i class="fa-solid fa-power-off" style="color: #ef4444;"></i></button>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-t" onclick="app.alternarTema()"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <button class="btn-t" onclick="app.fazerLogout()"><i class="fa-solid fa-power-off"></i></button>
             </div>
+        </div>
+        <div style="padding:20px;">
+            <button onclick="app.novaNota()" style="width:100%; padding:20px; border-radius:15px; background:linear-gradient(to right, var(--brilho), #6366f1); color:white; border:none; font-weight:800;">+ NOVA NOTA EM BRANCO</button>
         </div>
         
-        <div style="padding: 20px;">
-            <button onclick="app.novaNota()" style="width: 100%; background: linear-gradient(135deg, var(--brilho), #1d4ed8); color: white; border: none; padding: 25px; border-radius: 20px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-                + INICIAR NOVA NOTA
-            </button>
+        <p class="modelos-label">MODELOS RÁPIDOS</p>
+        <div class="grid">
+            <div class="card-nota" onclick="app.novaNota('Diário', '📅 Data: \n✨ Como foi meu dia: \n🙏 Gratidão:')">
+                <h4>📖 Diário</h4>
+            </div>
+            <div class="card-nota" onclick="app.novaNota('Checklist', '✅ Tarefa 1\n✅ Tarefa 2\n✅ Tarefa 3')">
+                <h4>✔️ Checklist</h4>
+            </div>
+            <div class="card-nota" onclick="app.novaNota('Reunião', '👥 Pessoas: \n📌 Pautas: \n🚀 Ações:')">
+                <h4>🤝 Reunião</h4>
+            </div>
         </div>
 
-        <div id="lista-notas" class="grid"></div>
+        <p class="modelos-label">SUAS NOTAS</p>
+        <div id="grade-notas" class="grid"></div>
     </div>
 
     <div id="tela-editor" class="tela">
         <div class="toolbar">
-            <button class="btn-tool" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
             
             <div class="group">
-                <select class="select-font" onchange="app.exec('fontName', this.value)">
+                <select class="input-inline" style="width:80px" onchange="app.exec('fontName', this.value)">
                     <option value="Plus Jakarta Sans">Padrão</option>
                     <option value="Playfair Display">Elegante</option>
                     <option value="Roboto Mono">Mono</option>
+                    <option value="Dancing Script">Escrita</option>
                 </select>
+                <button class="btn-t" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
+                <span id="font-size-display">18</span>
+                <button class="btn-t" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
             </div>
 
             <div class="group">
-                <button class="btn-tool" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
-                <button class="btn-tool" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
+                <button class="btn-t" onclick="app.exec('italic')"><i class="fa-solid fa-italic"></i></button>
+                <button class="btn-t" onclick="app.exec('underline')"><i class="fa-solid fa-underline"></i></button>
             </div>
 
             <div class="group">
-                <button class="btn-tool" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
-                <button class="btn-tool" onclick="app.exec('italic')"><i class="fa-solid fa-italic"></i></button>
-                <button class="btn-tool" onclick="app.exec('underline')"><i class="fa-solid fa-underline"></i></button>
-                <button class="btn-tool" onclick="app.exec('strikeThrough')"><i class="fa-solid fa-strikethrough"></i></button>
+                <input type="color" class="c-picker" onchange="app.exec('foreColor', this.value)" title="Cor da Letra">
+                <input type="color" class="c-picker" onchange="app.exec('backColor', this.value)" title="Fundo do Texto">
+                <input type="color" class="c-picker" onchange="app.mudarFundoNota(this.value)" title="Fundo da Nota">
             </div>
 
             <div class="group">
-                <input type="color" class="input-cor" onchange="app.exec('foreColor', this.value)" title="Cor do Texto">
-                <input type="color" class="input-cor" onchange="app.exec('backColor', this.value)" title="Grifar Texto">
+                <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list"></i></button>
+                <button class="btn-t" onclick="app.exec('insertOrderedList')"><i class="fa-solid fa-list-ol"></i></button>
+                <button class="btn-t" onclick="app.addFoto()"><i class="fa-solid fa-image"></i></button>
             </div>
 
-            <div class="group">
-                <button class="btn-tool" onclick="app.exec('justifyLeft')"><i class="fa-solid fa-align-left"></i></button>
-                <button class="btn-tool" onclick="app.exec('justifyCenter')"><i class="fa-solid fa-align-center"></i></button>
-                <button class="btn-tool" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
-            </div>
-
-            <div class="group">
-                <button class="btn-tool" onclick="app.compartilhar()"><i class="fa-solid fa-share-nodes"></i></button>
-                <button class="btn-tool" onclick="app.exportarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
-            </div>
-
-            <button class="btn-tool" style="margin-left: auto;" onclick="app.excluir()"><i class="fa-solid fa-trash-can" style="color:#ef4444"></i></button>
+            <button class="btn-t" style="margin-left:auto" onclick="app.exportarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
+            <button class="btn-t" onclick="app.excluir()"><i class="fa-solid fa-trash" style="color:#ef4444"></i></button>
         </div>
 
-        <div class="editor-workspace" id="area-pdf">
-            <input type="text" id="titulo-nota" oninput="app.salvar()" placeholder="Título do Pensamento...">
-            <div id="corpo-nota" contenteditable="true" oninput="app.salvar()"></div>
-        </div>
-
-        <div class="footer-status">
-            <span id="contagem-stats">Palavras: 0 | Caracteres: 0</span>
-            <span id="status-salvo">Sincronizado</span>
+        <div id="editor-container">
+            <input type="text" id="titulo-nota" oninput="app.salvar()" placeholder="Título...">
+            <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
         </div>
     </div>
 
     <script>
         const app = {
-            db: JSON.parse(localStorage.getItem('aetheria_ultra_db')) || [],
-            user: localStorage.getItem('aetheria_user'),
-            tema: localStorage.getItem('aetheria_tema') || 'escuro',
+            db: JSON.parse(localStorage.getItem('aether_db')) || [],
+            user: localStorage.getItem('aether_user'),
+            tema: localStorage.getItem('aether_tema') || 'escuro',
             idAtual: null,
             fSize: 18,
 
             init() {
                 this.aplicarTema();
-                if (this.user) { 
-                    this.renderDash(); 
-                    this.irPara('tela-dash'); 
-                }
+                if (this.user) { this.renderDash(); this.irPara('tela-dash'); }
             },
 
             irPara(id) {
@@ -176,62 +161,39 @@
                 document.getElementById(id).classList.add('ativa');
             },
 
-            aplicarTema() {
-                document.documentElement.setAttribute('data-tema', this.tema);
-            },
-
             alternarTema() {
-                this.tema = (this.tema === 'escuro') ? 'claro' : 'escuro';
-                localStorage.setItem('aetheria_tema', this.tema);
+                this.tema = this.tema === 'escuro' ? 'claro' : 'escuro';
+                localStorage.setItem('aether_tema', this.tema);
                 this.aplicarTema();
             },
 
+            aplicarTema() { document.body.setAttribute('data-tema', this.tema); },
+
             fazerLogin() {
-                const n = document.getElementById('user-input').value;
-                if (!n) return;
+                const n = document.getElementById('user-input').value || "Usuário";
                 this.user = n;
-                localStorage.setItem('aetheria_user', n);
-                this.animarFrase("entrada");
+                localStorage.setItem('aether_user', n);
+                this.renderDash();
+                this.irPara('tela-dash');
             },
 
-            fazerLogout() {
-                if(confirm("Deseja fechar o Aetheria?")) this.animarFrase("saida");
-            },
-
-            animarFrase(tipo) {
-                const frases = [
-                    {t: "A escrita é a geometria da alma.", a: "Platão"},
-                    {t: "Sua mente é um arquivo infinito de possibilidades.", a: "Aetheria Ultra"},
-                    {t: "O que não é escrito, é esquecido.", a: "Jefferson Dias"}
-                ];
-                const f = frases[Math.floor(Math.random()*frases.length)];
-                document.getElementById('msg-frase').innerText = `"${f.t}"`;
-                document.getElementById('msg-autor').innerText = f.a;
-                this.irPara('tela-frase');
-                setTimeout(() => {
-                    if(tipo === "entrada") { this.renderDash(); this.irPara('tela-dash'); }
-                    else { localStorage.removeItem('aetheria_user'); location.reload(); }
-                }, 2800);
-            },
+            fazerLogout() { localStorage.removeItem('aether_user'); location.reload(); },
 
             renderDash() {
-                document.getElementById('txt-ola').innerText = `Olá, ${this.user}`;
-                const agora = new Date();
-                document.getElementById('txt-acesso').innerText = `Acesso em: ${agora.toLocaleDateString()} às ${agora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
-                
-                const lista = document.getElementById('lista-notas');
-                lista.innerHTML = this.db.map(n => `
-                    <div class="card-nota" onclick="app.abrirNota(${n.id})">
-                        <h4>${n.tit || 'Nota sem título'}</h4>
-                        <span><i class="fa-regular fa-calendar"></i> ${n.data}</span>
+                document.getElementById('ola-user').innerText = `Olá, ${this.user}`;
+                document.getElementById('data-acesso').innerText = new Date().toLocaleString();
+                const grade = document.getElementById('grade-notas');
+                grade.innerHTML = this.db.map(n => `
+                    <div class="card-nota" onclick="app.abrirNota(${n.id})" style="background:${n.bg || 'var(--card)'}">
+                        <h4 style="color:var(--brilho)">${n.tit || 'S/ Título'}</h4>
+                        <small>${n.data}</small>
                     </div>
                 `).join('');
             },
 
-            novaNota() {
+            novaNota(tit = '', txt = '') {
                 const id = Date.now();
-                const data = new Date().toLocaleDateString();
-                this.db.unshift({ id, tit: '', txt: '', data });
+                this.db.unshift({ id, tit, txt, data: new Date().toLocaleDateString(), bg: '' });
                 this.abrirNota(id);
             },
 
@@ -239,8 +201,9 @@
                 this.idAtual = id;
                 const n = this.db.find(x => x.id === id);
                 document.getElementById('titulo-nota').value = n.tit;
-                document.getElementById('corpo-nota').innerHTML = n.txt;
-                this.atualizarContagem();
+                const editor = document.getElementById('area-texto');
+                editor.innerHTML = n.txt;
+                editor.parentElement.style.background = n.bg || 'transparent';
                 this.irPara('tela-editor');
             },
 
@@ -248,11 +211,8 @@
                 const n = this.db.find(x => x.id === this.idAtual);
                 if (n) {
                     n.tit = document.getElementById('titulo-nota').value;
-                    n.txt = document.getElementById('corpo-nota').innerHTML;
-                    localStorage.setItem('aetheria_ultra_db', JSON.stringify(this.db));
-                    this.atualizarContagem();
-                    document.getElementById('status-salvo').innerText = "Salvando...";
-                    setTimeout(() => document.getElementById('status-salvo').innerText = "Sincronizado", 800);
+                    n.txt = document.getElementById('area-texto').innerHTML;
+                    localStorage.setItem('aether_db', JSON.stringify(this.db));
                 }
             },
 
@@ -260,29 +220,29 @@
 
             ajustarFonte(v) {
                 this.fSize += v;
-                document.getElementById('corpo-nota').style.fontSize = this.fSize + 'px';
+                document.getElementById('area-texto').style.fontSize = this.fSize + 'px';
+                document.getElementById('font-size-display').innerText = this.fSize;
             },
 
-            atualizarContagem() {
-                const txt = document.getElementById('corpo-nota').innerText || "";
-                const palavras = txt.trim() ? txt.trim().split(/\s+/).length : 0;
-                document.getElementById('contagem-stats').innerText = `Palavras: ${palavras} | Caracteres: ${txt.length}`;
-            },
-
-            async compartilhar() {
+            mudarFundoNota(cor) {
                 const n = this.db.find(x => x.id === this.idAtual);
-                const txt = document.getElementById('corpo-nota').innerText;
-                if (navigator.share) await navigator.share({ title: n.tit, text: txt });
+                n.bg = cor;
+                document.getElementById('editor-container').style.background = cor;
+                this.salvar();
+            },
+
+            addFoto() {
+                const url = prompt("Cole o link da imagem:");
+                if(url) this.exec('insertImage', url);
             },
 
             exportarPDF() {
-                const element = document.getElementById('area-pdf');
-                const opt = { margin: 15, filename: 'Aetheria_Nota.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-                html2pdf().set(opt).from(element).save();
+                const element = document.getElementById('editor-container');
+                html2pdf().from(element).save('Aetheria_Nota.pdf');
             },
 
             voltar() { this.renderDash(); this.irPara('tela-dash'); },
-            excluir() { if(confirm("Deseja apagar esta nota?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('aetheria_ultra_db', JSON.stringify(this.db)); this.voltar(); } }
+            excluir() { if(confirm("Apagar?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('aether_db', JSON.stringify(this.db)); this.voltar(); } }
         };
         app.init();
     </script>
