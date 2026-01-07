@@ -317,10 +317,11 @@ footer {
 
             <div class="group">
                 <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
-                <button class="btn-t" onclick="app.exec('italic')"><i class="fa-solid fa-italic"></i></button>
-                <button class="btn-t" onclick="app.exec('underline')"><i class="fa-solid fa-underline"></i></button>
-                <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
-            </div>
+               <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
+<button class="btn-t" onclick="app.compartilharNota()" title="Compartilhar">
+    <i class="fa-solid fa-share-nodes"></i>
+</button>
+</div>
 
             <div class="group">
                 <input type="color" onchange="app.exec('foreColor', this.value)" style="width:30px; border:none; background:none;">
@@ -528,5 +529,6 @@ footer {
 </body>
 
 </html>
+
 
 
