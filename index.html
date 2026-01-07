@@ -14,37 +14,43 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--texto); min-height: 100vh; overflow: hidden; position: relative; }
 
+        /* Estrutura de Telas */
         .tela { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; background: var(--bg); z-index: 1; overflow-y: auto; }
         .tela.ativa { display: flex; animation: fadeIn 0.4s forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Login Premium */
         .flex-center { align-items: center; justify-content: center; text-align: center; padding: 25px; }
         .login-box { background: var(--card); padding: 40px; border-radius: 30px; border: 1px solid var(--borda); width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .input-estilizado { width: 100%; background: #050a14; border: 1px solid var(--borda); padding: 18px; border-radius: 15px; color: white; margin-bottom: 20px; text-align: center; font-size: 1.1rem; outline: none; }
         .btn-acesso { background: var(--brilho); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
+        /* Dashboard */
         .header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
-        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); min-height: 110px; cursor: pointer; }
+        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); min-height: 110px; cursor: pointer; transition: 0.3s; }
         
+        /* Barra de Ferramentas Corrigida */
         .barra-ferramentas { background: #070d17; padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
+        .barra-ferramentas::-webkit-scrollbar { display: none; }
         .group { display: flex; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 10px; gap: 5px; align-items: center; white-space: nowrap; }
         .btn-t { background: transparent; border: none; color: white; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .select-f { background: #141d2e; color: white; border: 1px solid var(--borda); padding: 5px; border-radius: 8px; font-size: 0.75rem; }
+        .select-f { background: #141d2e; color: white; border: 1px solid var(--borda); padding: 5px; border-radius: 8px; font-size: 0.75rem; outline: none; }
         
+        /* Área de Escrita */
         .area-escrita { padding: 25px; flex: 1; display: flex; flex-direction: column; }
         #input-titulo { width: 100%; background: transparent; border: none; color: inherit; font-size: 1.8rem; font-weight: 800; outline: none; margin-bottom: 15px; }
         #area-texto { min-height: 50vh; outline: none; font-size: 16px; line-height: 1.6; color: inherit; }
         
-        footer { padding: 30px; text-align: center; border-top: 1px solid var(--borda); opacity: 0.7; font-size: 0.8rem; }
+        footer { padding: 30px; text-align: center; border-top: 1px solid var(--borda); opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
     <div id="tela-login" class="tela flex-center ativa">
         <div class="login-box">
-            <img src="https://i.ibb.co/m0S9P3T/aetheria-logo.png" alt="Logo" style="width: 100px; margin-bottom: 20px;">
-            <h1>Aetheria</h1>
+            <img src="https://i.ibb.co/m0S9P3T/aetheria-logo.png" alt="Aetheria Logo" style="width: 100px; margin-bottom: 20px;">
+            <h1 style="font-family: 'Playfair Display', serif; letter-spacing: 2px;">Aetheria</h1>
             <p style="margin-bottom: 30px; opacity: 0.6;">by Jefferson Dias Software</p>
             <input type="text" id="user-input" class="input-estilizado" placeholder="Seu nome">
             <button onclick="app.fazerLogin()" class="btn-acesso">ENTRAR NO APP</button>
@@ -75,6 +81,7 @@
     <div id="tela-editor" class="tela">
         <div class="barra-ferramentas">
             <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
+            
             <div class="group">
                 <select class="select-f" onchange="app.exec('fontName', this.value)">
                     <option value="Plus Jakarta Sans">Padrão</option>
@@ -83,18 +90,22 @@
                     <option value="Dancing Script">Manuscrita</option>
                 </select>
             </div>
+
             <div class="group">
                 <button class="btn-t" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
                 <button class="btn-t" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
             </div>
+
             <div class="group">
                 <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
                 <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
-                <button class="btn-t" onclick="app.compartilharNota()"><i class="fa-solid fa-share-nodes"></i></button>
-                <button class="btn-t" onclick="app.exportarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
+                <button class="btn-t" onclick="app.compartilharNota()" title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="btn-t" onclick="app.exportarPDF()" title="Exportar PDF"><i class="fa-solid fa-file-pdf"></i></button>
             </div>
+
             <button class="btn-t" style="margin-left: auto;" onclick="app.deletar()"><i class="fa-solid fa-trash" style="color:#ef4444"></i></button>
         </div>
+        
         <div id="capture-area" class="area-escrita">
             <input type="text" id="input-titulo" oninput="app.salvar()" placeholder="Título...">
             <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
@@ -125,9 +136,16 @@
                 this.animarFrase("entrada");
             },
 
+            fazerLogout() {
+                if(confirm("Deseja sair do Aetheria?")) this.animarFrase("saida");
+            },
+
             animarFrase(tipo) {
-                const frases = [{t: "A persistência é o caminho do êxito.", a: "Chaplin"}];
-                const f = frases[0];
+                const frases = [
+                    {t: "A persistência é o caminho do êxito.", a: "Chaplin"},
+                    {t: "A mente que se abre nunca mais volta ao normal.", a: "Einstein"}
+                ];
+                const f = frases[Math.floor(Math.random()*frases.length)];
                 document.getElementById('msg-frase').innerText = `"${f.t}"`;
                 document.getElementById('msg-autor').innerText = f.a;
                 this.irPara('tela-frase');
@@ -142,7 +160,7 @@
                 const grid = document.getElementById('grade-notas');
                 grid.innerHTML = this.db.map(n => `
                     <div class="card-nota" onclick="app.abrirNota(${n.id})">
-                        <h4 style="color:var(--brilho)">${n.tit || 'Sem título'}</h4>
+                        <h4 style="color:var(--brilho)">${n.tit || 'Documento sem título'}</h4>
                     </div>
                 `).join('');
             },
@@ -181,740 +199,22 @@
                 const n = this.db.find(x => x.id === this.idAtual);
                 const texto = document.getElementById('area-texto').innerText;
                 if (navigator.share) {
-                    await navigator.share({ title: n.tit, text: texto });
-                }
-            },
-
-            exportarPDF() {
-                const element = document.getElementById('capture-area');
-                html2pdf().from(element).save();
-            },
-
-            voltar() { this.renderDash(); this.irPara('tela-dash'); },
-            deletar() { if(confirm("Apagar?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('inf_db', JSON.stringify(this.db)); this.voltar(); }},
-            fazerLogout() { this.animarFrase("saida"); }
-        };
-        app.init();
-    </script>
-</body>
-</html>        .header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
-        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); position: relative; min-height: 110px; cursor: pointer; }
-        
-        /* Barra de Ferramentas Completa (Scrollable) */
-        .barra-ferramentas { background: #070d17; padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
-        .barra-ferramentas::-webkit-scrollbar { display: none; }
-        .group { display: flex; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 10px; gap: 5px; align-items: center; white-space: nowrap; }
-        .btn-t { background: transparent; border: none; color: white; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .select-f { background: #141d2e; color: white; border: 1px solid var(--borda); padding: 5px; border-radius: 8px; font-size: 0.75rem; outline: none; }
-        
-        .area-escrita { padding: 25px; flex: 1; display: flex; flex-direction: column; transition: 0.3s; }
-        #input-titulo { width: 100%; background: transparent; border: none; color: inherit; font-size: 1.8rem; font-weight: 800; outline: none; margin-bottom: 15px; }
-        #area-texto { min-height: 50vh; outline: none; font-size: 16px; line-height: 1.6; color: inherit; }
-        
-        footer { padding: 30px; text-align: center; border-top: 1px solid var(--borda); }
-    </style>
-</head>
-<body>
-
-    <div id="tela-login" class="tela flex-center ativa">
-        <div class="login-box">
-            <i class="fa-solid fa-infinity fa-4x" style="color: var(--brilho); margin-bottom: 20px;"></i>
-            <h1>Infinity Notes</h1>
-            <p style="margin-bottom: 30px; opacity: 0.6;">Jefferson Dias Software</p>
-            <input type="text" id="user-input" class="input-estilizado" placeholder="Seu nome">
-            <button onclick="app.fazerLogin()" class="btn-acesso">ACESSAR APP</button>
-        </div>
-    </div>
-
-    <div id="tela-frase" class="tela flex-center">
-        <div class="caixa-frase">
-            <h2 id="msg-frase" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 15px; font-weight: 300; font-style: italic;"></h2>
-            <p id="msg-autor" style="color: var(--brilho); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;"></p>
-        </div>
-    </div>
-
-    <div id="tela-dash" class="tela">
-        <div class="header">
-            <div>
-                <h2 id="ola-user">Olá</h2>
-                <small id="data-login" style="color: var(--brilho); font-weight: 700; font-size: 0.6rem;"></small>
-            </div>
-            <button class="btn-t" onclick="app.fazerLogout()"><i class="fa-solid fa-power-off" style="color:#ef4444"></i></button>
-        </div>
-        <div style="padding: 20px;">
-            <div onclick="app.novaNota()" style="background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; font-weight: 800; box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);">
-                <i class="fa-solid fa-plus-circle"></i> NOVO DOCUMENTO
-            </div>
-        </div>
-        <div id="grade-notas" class="grid"></div>
-        <footer>Jefferson Dias &copy; 2026</footer>
-    </div>
-
-    <div id="tela-editor" class="tela">
-        <div class="barra-ferramentas">
-            <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
-            
-            <div class="group">
-                <select class="select-f" onchange="app.exec('fontName', this.value)">
-                    <option value="Plus Jakarta Sans">Padrão</option>
-                    <option value="Playfair Display">Elegante</option>
-                    <option value="Roboto Mono">Código</option>
-                    <option value="Dancing Script">Manuscrita</option>
-                </select>
-            </div>
-
-            <div class="group">
-                <button class="btn-t" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
-                <span id="txt-size" style="font-size: 0.8rem; width: 20px; text-align: center;">16</span>
-                <button class="btn-t" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
-            </div>
-
-            <div class="group">
-                <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
-                <button class="btn-t" onclick="app.exec('italic')"><i class="fa-solid fa-italic"></i></button>
-                <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
-            </div>
-
-            <div class="group">
-                <button class="btn-t" onclick="app.compartilharNota()"><i class="fa-solid fa-share-nodes"></i></button>
-                <button class="btn-t" onclick="app.exportarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
-            </div>
-
-            <div class="group">
-                <select class="select-f" onchange="app.mudarPapel(this.value)">
-                    <option value="var(--card)">Escuro</option>
-                    <option value="#fef3c7">Sépia</option>
-                    <option value="#ffffff">Papel</option>
-                    <option value="#dcfce7">Verde</option>
-                </select>
-            </div>
-
-            <button class="btn-t" style="margin-left: auto;" onclick="app.deletar()"><i class="fa-solid fa-trash" style="color:#ef4444"></i></button>
-        </div>
-        
-        <div id="capture-area" class="area-escrita">
-            <input type="text" id="input-titulo" oninput="app.salvar()" placeholder="Título do Documento...">
-            <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
-        </div>
-    </div>
-
-    <script>
-        const app = {
-            db: JSON.parse(localStorage.getItem('inf_db')) || [],
-            user: localStorage.getItem('inf_user'),
-            idAtual: null,
-            fSize: 16,
-
-            init() {
-                if (this.user) { this.renderDash(); this.irPara('tela-dash'); }
-            },
-
-            irPara(id) {
-                document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
-                document.getElementById(id).classList.add('ativa');
-            },
-
-            fazerLogin() {
-                const n = document.getElementById('user-input').value;
-                if (!n) return;
-                this.user = n;
-                localStorage.setItem('inf_user', n);
-                this.animarFrase("entrada");
-            },
-
-            fazerLogout() {
-                if(confirm("Deseja sair?")) this.animarFrase("saida");
-            },
-
-            animarFrase(tipo) {
-                const frases = [
-                    {t: "A mente que se abre a uma nova ideia jamais voltará ao seu tamanho original.", a: "Einstein"},
-                    {t: "A persistência é o caminho do êxito.", a: "Chaplin"},
-                    {t: "Escrever é esquecer. Ler é recordar.", a: "Fernando Pessoa"}
-                ];
-                const f = frases[Math.floor(Math.random() * frases.length)];
-                document.getElementById('msg-frase').innerText = `"${f.t}"`;
-                document.getElementById('msg-autor').innerText = f.a;
-                this.irPara('tela-frase');
-                
-                setTimeout(() => {
-                    if(tipo === "entrada") { this.renderDash(); this.irPara('tela-dash'); }
-                    else { localStorage.removeItem('inf_user'); location.reload(); }
-                }, 3000);
-            },
-
-            renderDash() {
-                document.getElementById('ola-user').innerText = `Olá, ${this.user}`;
-                document.getElementById('data-login').innerText = new Date().toLocaleDateString();
-                const grid = document.getElementById('grade-notas');
-                grid.innerHTML = this.db.map(n => `
-                    <div class="card-nota" onclick="app.abrirNota(${n.id})">
-                        <span style="font-size:0.5rem; color:var(--brilho); font-weight:800">DOCUMENTO</span>
-                        <h4 style="margin-top:5px">${n.tit || 'Sem título'}</h4>
-                    </div>
-                `).join('');
-            },
-
-            novaNota() {
-                const id = Date.now();
-                this.db.unshift({ id, tit: '', txt: '', papel: 'var(--card)' });
-                this.abrirNota(id);
-            },
-
-            abrirNota(id) {
-                this.idAtual = id;
-                const n = this.db.find(x => x.id === id);
-                document.getElementById('input-titulo').value = n.tit;
-                document.getElementById('area-texto').innerHTML = n.txt;
-                this.mudarPapel(n.papel || 'var(--card)');
-                this.irPara('tela-editor');
-            },
-
-            salvar() {
-                const n = this.db.find(x => x.id === this.idAtual);
-                if (n) {
-                    n.tit = document.getElementById('input-titulo').value;
-                    n.txt = document.getElementById('area-texto').innerHTML;
-                    localStorage.setItem('inf_db', JSON.stringify(this.db));
-                }
-            },
-
-            exec(c, v = null) { document.execCommand(c, false, v); this.salvar(); },
-
-            ajustarFonte(v) {
-                this.fSize += v;
-                document.getElementById('area-texto').style.fontSize = this.fSize + 'px';
-                document.getElementById('txt-size').innerText = this.fSize;
-            },
-
-            mudarPapel(cor) {
-                const area = document.querySelector('.area-escrita');
-                area.style.background = cor;
-                area.style.color = (cor === 'var(--card)' || cor === '#0a111f') ? '#f1f5f9' : '#1a1a1a';
-                const n = this.db.find(x => x.id === this.idAtual);
-                if(n) { n.papel = cor; this.salvar(); }
-            },
-
-            async compartilharNota() {
-                const n = this.db.find(x => x.id === this.idAtual);
-                const texto = document.getElementById('area-texto').innerText;
-                if (navigator.share) {
                     try {
-                        await navigator.share({ title: n.tit || 'Nota', text: `${n.tit}\n\n${texto}` });
+                        await navigator.share({ title: n.tit || 'Aetheria Note', text: `${n.tit}\n\n${texto}` });
                     } catch (e) { console.log(e); }
                 }
             },
 
             exportarPDF() {
                 const element = document.getElementById('capture-area');
-                const opt = { margin: 10, filename: 'nota.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+                const opt = { margin: 10, filename: 'aetheria_nota.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
                 html2pdf().set(opt).from(element).save();
             },
 
             voltar() { this.renderDash(); this.irPara('tela-dash'); },
-            deletar() { if(confirm("Excluir nota permanentemente?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('inf_db', JSON.stringify(this.db)); this.voltar(); } }
+            deletar() { if(confirm("Apagar permanentemente?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('inf_db', JSON.stringify(this.db)); this.voltar(); } }
         };
         app.init();
     </script>
 </body>
-</html>}
-
-body { 
-    background: var(--azul-escuro); 
-    color: var(--texto); 
-    min-height: 100vh; 
-    overflow-x: hidden; /* Impede que o app balance para os lados */
-    position: relative;
-}
-
-/* Sistema de Telas - Correção de sobreposição */
-.tela { 
-    display: none; 
-    position: fixed; /* Fixa a tela para não rolar o fundo */
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    flex-direction: column; 
-    background: var(--azul-escuro);
-    z-index: 1;
-    overflow-y: auto; /* Permite rolar apenas dentro da tela ativa */
-}
-
-.tela.ativa { 
-    display: flex; 
-    animation: fadeIn 0.4s ease-in-out forwards; 
-}
-
-@keyframes fadeIn { 
-    from { opacity: 0; transform: translateY(10px); } 
-    to { opacity: 1; transform: translateY(0); } 
-}
-
-/* Login e Transições */
-.centralizar { 
-    align-items: center; 
-    justify-content: center; 
-    text-align: center; 
-    padding: 25px; 
-}
-
-.cartao-login { 
-    background: var(--azul-card); 
-    padding: 40px; 
-    border-radius: 30px; 
-    width: 100%; 
-    max-width: 400px; 
-    border: 1px solid var(--borda); 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.campo-texto { 
-    width: 100%; 
-    background: #050a14; 
-    border: 1px solid var(--borda); 
-    padding: 16px; 
-    border-radius: 12px; 
-    color: white; 
-    margin-bottom: 20px; 
-    text-align: center; 
-    outline: none; 
-    font-size: 1rem;
-}
-
-.btn-entrar { 
-    background: var(--azul-destaque); 
-    color: white; 
-    border: none; 
-    padding: 16px; 
-    border-radius: 12px; 
-    width: 100%; 
-    font-weight: 800; 
-    cursor: pointer; 
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Dashboard */
-.container { 
-    width: 100%; 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 20px; 
-}
-
-.bloco-criar { 
-    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); 
-    padding: 30px; 
-    border-radius: 20px; 
-    text-align: center; 
-    margin-bottom: 30px; 
-    cursor: pointer; 
-    box-shadow: 0 8px 16px rgba(14, 165, 233, 0.3);
-}
-
-.grade-notas { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-    gap: 15px; 
-}
-
-.nota-item { 
-    background: var(--azul-card); 
-    border: 1px solid var(--borda); 
-    border-radius: 18px; 
-    padding: 20px; 
-    position: relative; 
-    cursor: pointer; 
-    min-height: 120px;
-}
-
-/* Editor e Toolbar Mobile-Friendly */
-.barra-editor { 
-    padding: 10px; 
-    border-bottom: 1px solid var(--borda); 
-    background: #070d17; 
-    position: sticky; 
-    top: 0; 
-    z-index: 100; 
-    overflow-x: auto; /* Permite arrastar os botões no celular */
-    display: flex;
-}
-
-.toolbar { 
-    display: flex; 
-    gap: 8px; 
-    align-items: center;
-}
-
-.grupo { 
-    display: flex; 
-    gap: 4px; 
-    background: rgba(255,255,255,0.05); 
-    padding: 6px; 
-    border-radius: 10px; 
-    align-items: center; 
-    white-space: nowrap;
-}
-
-.btn-f { 
-    background: transparent; 
-    border: none; 
-    color: white; 
-    width: 38px; 
-    height: 38px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-}
-
-.select-f { 
-    background: #141d2e; 
-    color: white; 
-    border: 1px solid var(--borda); 
-    padding: 6px; 
-    border-radius: 8px; 
-    font-size: 0.8rem; 
-}
-
-/* Área de Escrita */
-.editor-container { 
-    width: 100%;
-    max-width: 850px; 
-    margin: 0 auto; 
-    padding: 25px; 
-    flex: 1;
-}
-
-#titulo-nota { 
-    width: 100%; 
-    background: transparent; 
-    border: none; 
-    color: inherit; 
-    font-size: 1.8rem; 
-    font-weight: 800; 
-    outline: none; 
-    margin-bottom: 20px; 
-}
-
-#corpo-nota { 
-    min-height: 50vh; 
-    outline: none; 
-    font-size: 16px; 
-    line-height: 1.7; 
-    color: inherit; 
-}
-
-/* Frase de Transição */
-#tela-frase { 
-    background: #000 !important; 
-    z-index: 9999; 
-}
-
-#texto-frase { 
-    font-family: 'Playfair Display', serif; 
-    font-size: 1.8rem; 
-    font-weight: 300; 
-    font-style: italic; 
-    margin-bottom: 15px;
-}
-
-/* Rodapé */
-footer { 
-    padding: 25px; 
-    text-align: center; 
-    font-size: 0.8rem; 
-    opacity: 0.6; 
-    border-top: 1px solid var(--borda); 
-}
-
-.tag { 
-    font-size: 0.6rem; 
-    font-weight: 800; 
-    background: var(--azul-destaque); 
-    padding: 3px 8px; 
-    border-radius: 5px; 
-    margin-bottom: 10px; 
-    display: inline-block;
-}
-        footer { padding: 20px; text-align: center; font-size: 0.8rem; opacity: 0.5; border-top: 1px solid var(--borda); }
-    </style>
-</head>
-<body>
-
-    <div id="tela-login" class="tela flex-center ativa">
-        <div class="login-box">
-            <i class="fa-solid fa-infinity fa-4x" style="color: var(--brilho); margin-bottom: 20px;"></i>
-            <h1 style="margin-bottom: 10px;">Infinity Notes</h1>
-            <p style="opacity: 0.5; margin-bottom: 30px;">Jefferson Dias Software</p>
-            <input type="text" id="user-input" class="input-estilizado" placeholder="Como quer ser chamado?">
-            <button onclick="app.fazerLogin()" class="btn-acesso">ENTRAR NO APP</button>
-        </div>
-    </div>
-
-    <div id="tela-frase" class="tela flex-center">
-        <div class="caixa-frase">
-            <i class="fa-solid fa-quote-left fa-2x" style="color: var(--brilho); margin-bottom: 20px;"></i>
-            <h2 id="msg-frase" style="font-weight: 300; font-size: 1.8rem; line-height: 1.4; font-family: 'Playfair Display', serif;"></h2>
-            <div style="width: 50px; height: 2px; background: var(--brilho); margin: 20px auto;"></div>
-            <p id="msg-autor" style="text-transform: uppercase; letter-spacing: 3px; font-weight: 800; font-size: 0.7rem; color: var(--brilho);"></p>
-        </div>
-    </div>
-
-    <div id="tela-dash" class="tela">
-        <div class="header">
-            <div>
-                <h2 id="ola-user">Olá</h2>
-                <small id="last-access" style="color: var(--brilho); font-weight: 700; font-size: 0.6rem;"></small>
-            </div>
-            <button class="btn-t" style="color: #ef4444;" onclick="app.fazerLogout()"><i class="fa-solid fa-power-off"></i></button>
-        </div>
-        <div style="flex: 1; overflow-y: auto;">
-            <div class="btn-novo" onclick="app.novaNota()">
-                <i class="fa-solid fa-plus-circle fa-2x"></i>
-                <p style="font-weight: 700; margin-top: 10px;">CRIAR NOVO DOCUMENTO</p>
-            </div>
-            <div id="grade-notas" class="grid"></div>
-        </div>
-        <footer>Jefferson Dias &copy; 2026</footer>
-    </div>
-
-    <div id="tela-editor" class="tela">
-        <div class="barra-ferramentas">
-            <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
-            
-            <div class="group">
-                <select class="select-t" onchange="app.exec('fontName', this.value)">
-                    <option value="Plus Jakarta Sans">Padrão</option>
-                    <option value="Montserrat">Moderna</option>
-                    <option value="Playfair Display">Elegante</option>
-                    <option value="Roboto Mono">Código</option>
-                    <option value="Dancing Script">Manuscrita</option>
-                </select>
-                <button class="btn-t" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
-                <span id="num-fonte" style="font-size: 0.8rem; width: 20px; text-align: center;">16</span>
-                <button class="btn-t" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
-            </div>
-
-            <div class="group">
-                <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
-               <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list-ul"></i></button>
-<button class="btn-t" onclick="app.compartilharNota()" title="Compartilhar">
-    <i class="fa-solid fa-share-nodes"></i>
-</button>
-</div>
-
-            <div class="group">
-                <input type="color" onchange="app.exec('foreColor', this.value)" style="width:30px; border:none; background:none;">
-                <select class="select-t" onchange="app.mudarPapel(this.value)">
-                    <option value="var(--card)">Escuro</option>
-                    <option value="#ffffff">Papel</option>
-                    <option value="#fef3c7">Sépia</option>
-                    <option value="#dcfce7">Verde</option>
-                </select>
-            </div>
-
-            <div class="group" style="margin-left: auto;">
-                <button class="btn-t" onclick="app.fixar()"><i class="fa-solid fa-thumbtack"></i></button>
-                <button class="btn-t" onclick="app.gerarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
-                <button class="btn-t" style="color:#ef4444;" onclick="app.deletar()"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        </div>
-
-        <div class="area-escrita" id="papel-nota">
-            <input type="text" id="input-titulo" oninput="app.salvar()" placeholder="Título do arquivo...">
-            <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
-        </div>
-        <footer style="background: rgba(0,0,0,0.2);">Criado por Jefferson Dias</footer>
-    </div>
-
-    <script>
-        const app = {
-            db: JSON.parse(localStorage.getItem('inf_final_db')) || [],
-            user: localStorage.getItem('inf_user'),
-            hora: localStorage.getItem('inf_hora'),
-            idAtual: null,
-            tamanho: 16,
-
-            init() {
-                if (this.user) {
-                    this.renderDash();
-                    this.irPara('tela-dash');
-                } else {
-                    this.irPara('tela-login');
-                }
-            },
-
-            irPara(id) {
-                document.querySelectorAll('.tela').forEach(t => {
-                    t.classList.remove('ativa');
-                    t.style.display = 'none';
-                });
-                const alvo = document.getElementById(id);
-                alvo.style.display = 'flex';
-                setTimeout(() => alvo.classList.add('ativa'), 50);
-            },
-
-            fazerLogin() {
-                const n = document.getElementById('user-input').value;
-                if (!n) return alert("Por favor, digite seu nome!");
-                
-                this.user = n;
-                this.hora = new Date().toLocaleString();
-                localStorage.setItem('inf_user', n);
-                localStorage.setItem('inf_hora', this.hora);
-                
-                this.animacaoFrase("entrada");
-            },
-
-            animacaoFrase(tipo) {
-                const frases = [
-                    {t: "Sua produtividade começa onde a organização encontra o foco.", a: "Jefferson Dias"},
-                    {t: "A persistência é o único caminho que leva ao êxito.", a: "Charles Chaplin"},
-                    {t: "No meio da dificuldade encontra-se a oportunidade.", a: "Albert Einstein"},
-                    {t: "Grandes ideias surgem de pensamentos anotados.", a: "Infinity Notes"},
-                    {t: "A mente que se abre a uma nova ideia jamais retorna ao tamanho original.", a: "Einstein"}
-                ];
-                
-                const f = frases[Math.floor(Math.random() * frases.length)];
-                
-                document.getElementById('msg-frase').innerText = tipo === "saida" ? "Salvando suas alterações com segurança..." : `"${f.t}"`;
-                document.getElementById('msg-autor').innerText = tipo === "saida" ? "Até logo!" : f.a;
-
-                // Bloqueia tudo e mostra a frase
-                this.irPara('tela-frase');
-
-                setTimeout(() => {
-                    if (tipo === "saida") {
-                        localStorage.removeItem('inf_user');
-                        location.reload();
-                    } else {
-                        this.renderDash();
-                        this.irPara('tela-dash');
-                    }
-                }, 3000); // 3 segundos para garantir que a pessoa leia a frase
-            },
-
-            renderDash() {
-                document.getElementById('ola-user').innerText = `Olá, ${this.user}`;
-                document.getElementById('last-access').innerText = `ÚLTIMO ACESSO: ${this.hora}`;
-                const grid = document.getElementById('grade-notas');
-                
-                // Ordena fixadas primeiro
-                const ordenadas = [...this.db].sort((a,b) => b.fix - a.fix);
-                
-                grid.innerHTML = ordenadas.map(n => `
-                    <div class="card-nota" onclick="app.abrirNota(${n.id})" style="background:${n.cor || 'var(--card)'}">
-                        ${n.fix ? '<i class="fa-solid fa-thumbtack" style="position:absolute; top:10px; right:10px; color:var(--brilho); font-size:0.7rem"></i>' : ''}
-                        <span style="font-size:0.5rem; color:var(--brilho); font-weight:800; border:1px solid; padding:2px 5px; border-radius:4px">DOC</span>
-                        <h4 style="margin-top:10px; color:${this.checkCor(n.cor)}">${n.tit || 'Sem título'}</h4>
-                    </div>
-                `).join('');
-            },
-
-            checkCor(c) { return (c === '#ffffff' || c === '#fef3c7' || c === '#dcfce7') ? '#111' : '#fff'; },
-
-            novaNota() {
-                const id = Date.now();
-                this.db.unshift({ id, tit: '', txt: '', fix: false, cor: 'var(--card)' });
-                this.abrirNota(id);
-            },
-
-            abrirNota(id) {
-                this.idAtual = id;
-                const n = this.db.find(x => x.id === id);
-                document.getElementById('input-titulo').value = n.tit;
-                document.getElementById('area-texto').innerHTML = n.txt;
-                this.mudarPapel(n.cor || 'var(--card)');
-                this.irPara('tela-editor');
-            },
-
-            salvar() {
-                const n = this.db.find(x => x.id === this.idAtual);
-                if (n) {
-                    n.tit = document.getElementById('input-titulo').value;
-                    n.txt = document.getElementById('area-texto').innerHTML;
-                    localStorage.setItem('inf_final_db', JSON.stringify(this.db));
-                }
-            },
-
-            exec(c, v=null) { document.execCommand(c, false, v); this.salvar(); },
-
-            ajustarFonte(d) {
-                this.tamanho += d;
-                if (this.tamanho < 8) this.tamanho = 8;
-                document.getElementById('area-texto').style.fontSize = this.tamanho + 'px';
-                document.getElementById('num-fonte').innerText = this.tamanho;
-            },
-
-            mudarPapel(c) {
-                const p = document.getElementById('papel-nota');
-                p.style.backgroundColor = c;
-                p.style.color = this.checkCor(c);
-                const n = this.db.find(x => x.id === this.idAtual);
-                if (n) { n.cor = c; this.salvar(); }
-            },
-
-            fixar() {
-                const n = this.db.find(x => x.id === this.idAtual);
-                n.fix = !n.fix;
-                this.salvar();
-                alert(n.fix ? "Fixado no topo!" : "Desafixado!");
-            },
-
-            gerarPDF() {
-                const el = document.getElementById('papel-nota');
-                html2pdf().from(el).save(`${this.user}_nota.pdf`);
-            },
-
-            deletar() {
-                if (confirm("Deseja apagar este arquivo?")) {
-                    this.db = this.db.filter(x => x.id !== this.idAtual);
-                    localStorage.setItem('inf_final_db', JSON.stringify(this.db));
-                    this.voltar();
-                }
-            },
-
-            voltar() { this.renderDash(); this.irPara('tela-dash'); },
-            fazerLogout() { if(confirm("Deseja sair do Infinity Notes?")) this.animacaoFrase("saida"); }
-
-            async compartilharNota() {
-    const n = this.db.find(x => x.id === this.idAtual);
-    if (!n) {
-        alert("Abra uma nota para compartilhar!");
-        return;
-    }
-
-    // Pega o texto limpo do editor
-    const textoPuro = document.getElementById('area-texto').innerText;
-    
-    const dadosPartilha = {
-        title: n.tit || 'Nota do Infinity Notes',
-        text: `${n.tit}\n\n${textoPuro}`,
-    };
-
-    try {
-        if (navigator.share) {
-            await navigator.share(dadosPartilha);
-        } else {
-            alert("Seu navegador não suporta compartilhamento direto. Tente baixar o app ou usar o Chrome atualizado.");
-        }
-    } catch (err) {
-        console.error('Erro ao compartilhar:', err);
-    }
-},
-        };
-
-        app.init();
-    </script>
-</body>
-
 </html>
-
-
-
-
-
