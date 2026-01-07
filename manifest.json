@@ -1,17 +1,18 @@
 {
-  "name": "Infinity Notes Pro",
-  "short_name": "Infinity",
-  "description": "Bloco de Notas Ultra de Jefferson Dias",
-  "start_url": "index.html",
+  "name": "Aetheria Notes",
+  "short_name": "Aetheria",
+  "id": "/aetheria-notes",
+  "start_url": "/WEB/index.html",
   "display": "standalone",
   "background_color": "#0a111f",
   "theme_color": "#0a111f",
-  "orientation": "portrait",
+  "description": "Um espaço infinito para seus pensamentos e criações.",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/564/564445.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/566/566411.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
