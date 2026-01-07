@@ -495,6 +495,32 @@ footer {
 
             voltar() { this.renderDash(); this.irPara('tela-dash'); },
             fazerLogout() { if(confirm("Deseja sair do Infinity Notes?")) this.animacaoFrase("saida"); }
+
+            async compartilharNota() {
+    const n = this.db.find(x => x.id === this.idAtual);
+    if (!n) {
+        alert("Abra uma nota para compartilhar!");
+        return;
+    }
+
+    // Pega o texto limpo do editor
+    const textoPuro = document.getElementById('area-texto').innerText;
+    
+    const dadosPartilha = {
+        title: n.tit || 'Nota do Infinity Notes',
+        text: `${n.tit}\n\n${textoPuro}`,
+    };
+
+    try {
+        if (navigator.share) {
+            await navigator.share(dadosPartilha);
+        } else {
+            alert("Seu navegador não suporta compartilhamento direto. Tente baixar o app ou usar o Chrome atualizado.");
+        }
+    } catch (err) {
+        console.error('Erro ao compartilhar:', err);
+    }
+},
         };
 
         app.init();
@@ -502,4 +528,5 @@ footer {
 </body>
 
 </html>
+
 
