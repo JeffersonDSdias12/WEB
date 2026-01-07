@@ -19,50 +19,243 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        :root {
-            --bg: #0a111f;
-            --card: #141d2e;
-            --brilho: #0ea5e9;
-            --texto: #f1f5f9;
-            --borda: rgba(255, 255, 255, 0.1);
-        }
+      :root {
+    --azul-escuro: #0a111f;
+    --azul-card: #141d2e;
+    --azul-destaque: #0ea5e9;
+    --borda: rgba(255, 255, 255, 0.1);
+    --texto: #f1f5f9;
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--texto); min-height: 100vh; overflow: hidden; }
+/* Reset Geral para Mobile */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    -webkit-tap-highlight-color: transparent;
+}
 
-        /* Telas */
-        .tela { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; background: var(--bg); z-index: 1; }
-        .tela.ativa { display: flex; animation: fadeIn 0.4s forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+body { 
+    background: var(--azul-escuro); 
+    color: var(--texto); 
+    min-height: 100vh; 
+    overflow-x: hidden; /* Impede que o app balance para os lados */
+    position: relative;
+}
 
-        /* Login */
-        .flex-center { align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        .login-box { background: var(--card); padding: 40px; border-radius: 30px; border: 1px solid var(--borda); width: 100%; max-width: 380px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .input-estilizado { width: 100%; background: #050a14; border: 1px solid var(--borda); padding: 18px; border-radius: 15px; color: white; margin-bottom: 20px; text-align: center; font-size: 1.1rem; outline: none; }
-        .btn-acesso { background: var(--brilho); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; }
+/* Sistema de Telas - Correção de sobreposição */
+.tela { 
+    display: none; 
+    position: fixed; /* Fixa a tela para não rolar o fundo */
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    flex-direction: column; 
+    background: var(--azul-escuro);
+    z-index: 1;
+    overflow-y: auto; /* Permite rolar apenas dentro da tela ativa */
+}
 
-        /* TELA DE FRASES (PRETA) */
-        #tela-frase { background: #000 !important; z-index: 9999 !important; }
-        .caixa-frase { padding: 40px; animation: surge 1s ease-out; }
-        @keyframes surge { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.tela.ativa { 
+    display: flex; 
+    animation: fadeIn 0.4s ease-in-out forwards; 
+}
 
-        /* Dashboard */
-        .header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); }
-        .btn-novo { background: linear-gradient(135deg, #0ea5e9, #2563eb); margin: 20px; padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; overflow-y: auto; }
-        .card-nota { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--borda); position: relative; min-height: 120px; cursor: pointer; }
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
 
-        /* Editor */
-        .barra-ferramentas { background: #070d17; padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--borda); white-space: nowrap; }
-        .barra-ferramentas::-webkit-scrollbar { display: none; }
-        .group { display: flex; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 10px; gap: 5px; align-items: center; }
-        .btn-t { background: transparent; border: none; color: white; width: 38px; height: 38px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .select-t { background: #1e293b; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 0.8rem; }
+/* Login e Transições */
+.centralizar { 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    padding: 25px; 
+}
 
-        .area-escrita { padding: 25px; flex: 1; overflow-y: auto; transition: 0.3s; }
-        #input-titulo { width: 100%; background: transparent; border: none; color: inherit; font-size: 2rem; font-weight: 800; outline: none; margin-bottom: 15px; }
-        #area-texto { min-height: 60vh; outline: none; font-size: 16px; line-height: 1.7; color: inherit; }
+.cartao-login { 
+    background: var(--azul-card); 
+    padding: 40px; 
+    border-radius: 30px; 
+    width: 100%; 
+    max-width: 400px; 
+    border: 1px solid var(--borda); 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
 
+.campo-texto { 
+    width: 100%; 
+    background: #050a14; 
+    border: 1px solid var(--borda); 
+    padding: 16px; 
+    border-radius: 12px; 
+    color: white; 
+    margin-bottom: 20px; 
+    text-align: center; 
+    outline: none; 
+    font-size: 1rem;
+}
+
+.btn-entrar { 
+    background: var(--azul-destaque); 
+    color: white; 
+    border: none; 
+    padding: 16px; 
+    border-radius: 12px; 
+    width: 100%; 
+    font-weight: 800; 
+    cursor: pointer; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Dashboard */
+.container { 
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px; 
+}
+
+.bloco-criar { 
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); 
+    padding: 30px; 
+    border-radius: 20px; 
+    text-align: center; 
+    margin-bottom: 30px; 
+    cursor: pointer; 
+    box-shadow: 0 8px 16px rgba(14, 165, 233, 0.3);
+}
+
+.grade-notas { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+    gap: 15px; 
+}
+
+.nota-item { 
+    background: var(--azul-card); 
+    border: 1px solid var(--borda); 
+    border-radius: 18px; 
+    padding: 20px; 
+    position: relative; 
+    cursor: pointer; 
+    min-height: 120px;
+}
+
+/* Editor e Toolbar Mobile-Friendly */
+.barra-editor { 
+    padding: 10px; 
+    border-bottom: 1px solid var(--borda); 
+    background: #070d17; 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    overflow-x: auto; /* Permite arrastar os botões no celular */
+    display: flex;
+}
+
+.toolbar { 
+    display: flex; 
+    gap: 8px; 
+    align-items: center;
+}
+
+.grupo { 
+    display: flex; 
+    gap: 4px; 
+    background: rgba(255,255,255,0.05); 
+    padding: 6px; 
+    border-radius: 10px; 
+    align-items: center; 
+    white-space: nowrap;
+}
+
+.btn-f { 
+    background: transparent; 
+    border: none; 
+    color: white; 
+    width: 38px; 
+    height: 38px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.select-f { 
+    background: #141d2e; 
+    color: white; 
+    border: 1px solid var(--borda); 
+    padding: 6px; 
+    border-radius: 8px; 
+    font-size: 0.8rem; 
+}
+
+/* Área de Escrita */
+.editor-container { 
+    width: 100%;
+    max-width: 850px; 
+    margin: 0 auto; 
+    padding: 25px; 
+    flex: 1;
+}
+
+#titulo-nota { 
+    width: 100%; 
+    background: transparent; 
+    border: none; 
+    color: inherit; 
+    font-size: 1.8rem; 
+    font-weight: 800; 
+    outline: none; 
+    margin-bottom: 20px; 
+}
+
+#corpo-nota { 
+    min-height: 50vh; 
+    outline: none; 
+    font-size: 16px; 
+    line-height: 1.7; 
+    color: inherit; 
+}
+
+/* Frase de Transição */
+#tela-frase { 
+    background: #000 !important; 
+    z-index: 9999; 
+}
+
+#texto-frase { 
+    font-family: 'Playfair Display', serif; 
+    font-size: 1.8rem; 
+    font-weight: 300; 
+    font-style: italic; 
+    margin-bottom: 15px;
+}
+
+/* Rodapé */
+footer { 
+    padding: 25px; 
+    text-align: center; 
+    font-size: 0.8rem; 
+    opacity: 0.6; 
+    border-top: 1px solid var(--borda); 
+}
+
+.tag { 
+    font-size: 0.6rem; 
+    font-weight: 800; 
+    background: var(--azul-destaque); 
+    padding: 3px 8px; 
+    border-radius: 5px; 
+    margin-bottom: 10px; 
+    display: inline-block;
+}
         footer { padding: 20px; text-align: center; font-size: 0.8rem; opacity: 0.5; border-top: 1px solid var(--borda); }
     </style>
 </head>
@@ -309,3 +502,4 @@
 </body>
 
 </html>
+
