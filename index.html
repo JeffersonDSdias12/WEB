@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Aetheria Professional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Roboto+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -35,6 +36,13 @@
         .card-nota:active { transform: scale(0.95); }
 
         /* Toolbar */
+        <select class="input-inline" onchange="app.exec('fontName', this.value)">
+    <option value="Plus Jakarta Sans">Padrão</option>
+    <option value="Playfair Display">Elegante</option>
+    <option value="Roboto Mono">Código</option>
+    <option value="Dancing Script">Manuscrita</option>
+</select>
+        
         .toolbar { background: var(--toolbar); padding: 8px; display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 10; }
         .toolbar::-webkit-scrollbar { display: none; }
         .group { display: flex; background: rgba(128,128,128,0.1); padding: 4px; border-radius: 10px; gap: 4px; align-items: center; }
@@ -53,6 +61,10 @@
         .tela-preta { background: #000 !important; color: #fff !important; text-align: center; justify-content: center; align-items: center; padding: 40px; }
         .frase-texto { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; margin-bottom: 20px; line-height: 1.4; }
         .frase-autor { color: var(--brilho); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; }
+  font[face="Playfair Display"] { font-family: 'Playfair Display', serif; }
+font[face="Roboto Mono"] { font-family: 'Roboto Mono', monospace; }
+font[face="Dancing Script"] { font-family: 'Dancing Script', cursive; }
+        
     </style>
 </head>
 <body data-tema="escuro">
@@ -292,3 +304,4 @@
 </body>
     </html>
             
+
