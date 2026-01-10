@@ -3,303 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aetheria Professional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-
+    <title>Victory Notes - Premium</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Roboto+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root { 
-            --bg: #0a111f; --card: #141d2e; --brilho: #0ea5e9; --texto: #f1f5f9; --borda: rgba(255, 255, 255, 0.1); --toolbar: #070d17;
-        }
-        [data-tema="claro"] {
-            --bg: #f8fafc; --card: #ffffff; --brilho: #2563eb; --texto: #1e293b; --borda: rgba(0, 0, 0, 0.1); --toolbar: #ffffff;
+            --bg-dark: #03040a;
+            --primary: #fbbf24;
+            --accent: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text: #f1f5f9;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--texto); min-height: 100vh; overflow: hidden; transition: 0.3s; }
+        body.light-mode {
+            --bg-dark: #f8fafc;
+            --text: #0f172a;
+            --glass: rgba(0, 0, 0, 0.05);
+            --primary: #d97706;
+        }
 
-        .tela { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; background: var(--bg); z-index: 1; overflow-y: auto; }
-        .tela.ativa { display: flex; animation: fadeIn 0.4s forwards; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-dark); color: var(--text); height: 100vh; overflow: hidden; transition: background 0.4s; }
+
+        .bg-glow {
+            position: fixed; top: 50%; left: 50%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+            transform: translate(-50%, -50%); z-index: -1; filter: blur(80px);
+            animation: pulse 8s infinite alternate;
+        }
+        @keyframes pulse { from { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } to { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; } }
+
+        .tela { display: none; position: absolute; inset: 0; flex-direction: column; background: var(--bg-dark); z-index: 10; padding: 20px; }
+        .tela.ativa { display: flex; animation: fadeIn 1.2s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Login */
-        .login-box { text-align: center; padding: 40px; max-width: 400px; margin: auto; background: var(--card); border-radius: 30px; border: 1px solid var(--borda); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-        .google-btn { background: white; color: #444; padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; border: 1px solid #ddd; margin-top: 20px; width: 100%; justify-content: center; }
+        .logo-v {
+            font-family: 'Playfair Display', serif; font-size: 150px; font-weight: 900;
+            background: linear-gradient(to bottom, #fff, var(--primary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.5));
+            animation: v-float 4s ease-in-out infinite;
+        }
+        @keyframes v-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); filter: drop-shadow(0 0 50px var(--primary)); } }
 
-        /* Dash */
-        .header { padding: 20px; border-bottom: 1px solid var(--borda); display: flex; justify-content: space-between; align-items: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
-        .card-nota { background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid var(--borda); cursor: pointer; transition: 0.2s; }
-        .card-nota:active { transform: scale(0.95); }
+        .input-premium {
+            width: 100%; max-width: 300px; padding: 18px; border-radius: 20px;
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text); text-align: center; font-size: 1rem; outline: none;
+            transition: 0.4s; backdrop-filter: blur(10px); margin-bottom: 20px;
+        }
 
-        /* Toolbar */
-        .toolbar { background: var(--toolbar); padding: 8px; display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 10; }
-        .toolbar::-webkit-scrollbar { display: none; }
-        .group { display: flex; background: rgba(128,128,128,0.1); padding: 4px; border-radius: 10px; gap: 4px; align-items: center; }
-        .btn-t { background: transparent; border: none; color: var(--texto); width: 34px; height: 34px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .btn-premium {
+            width: 100%; max-width: 300px; padding: 18px; border-radius: 20px;
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            color: #000; border: none; font-weight: 900; font-size: 1rem;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+        }
+
+        .top-bar { background: rgba(0,0,0,0.8); padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--primary); align-items: center; backdrop-filter: blur(10px); }
+        body.light-mode .top-bar { background: rgba(255,255,255,0.8); }
+
+        .tool-group { display: flex; gap: 5px; align-items: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 8px; flex-shrink: 0; }
+        .btn-tool { background: var(--glass); border: none; color: var(--text); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .btn-tool:active { background: var(--primary); color: #000; }
+
+        #input-titulo { 
+            width: 95%; max-width: 1200px; margin: 20px auto; display: block;
+            background: var(--glass); border: 2px solid var(--primary); border-radius: 15px;
+            padding: 15px; color: var(--primary); font-size: 1.3rem; font-weight: 800; text-align: center; outline: none;
+        }
+
+        .nota-container { flex: 1; padding: 0 10px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding-bottom: 100px; }
+        #area-nota { 
+            width: 95%; max-width: 1200px; height: auto; min-height: 80vh; background: #fff; color: #000;
+            padding: 30px; border-radius: 20px; outline: none; font-size: 18px; line-height: 1.6;
+            transition: all 0.3s ease; flex-shrink: 0;
+        }
+
+        #float-menu { position: absolute; background: #111; border: 1px solid var(--primary); padding: 5px; border-radius: 12px; display: none; gap: 5px; z-index: 1000; }
+
+        .footer { background: #000; padding: 12px; display: flex; justify-content: space-between; font-size: 9px; color: var(--primary); flex-shrink: 0; }
+        body.light-mode .footer { background: #f1f5f9; border-top: 1px solid #ddd; }
+
+        .grid-notas { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
+        .card-nota { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; cursor: pointer; }
         
-        .input-inline { background: transparent; border: none; color: var(--texto); width: 45px; text-align: center; font-weight: 800; outline: none; }
-        .c-picker { width: 24px; height: 24px; border: none; background: transparent; cursor: pointer; }
-
-        /* Editor */
-        #editor-container { flex: 1; padding: 25px; overflow-y: auto; transition: background 0.3s; }
-        #titulo-nota { width: 100%; background: transparent; border: none; color: var(--brilho); font-size: 1.8rem; font-weight: 900; outline: none; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
-        #area-texto { outline: none; min-height: 400px; line-height: 1.6; font-size: 18px; }
-        #area-texto img { max-width: 100%; border-radius: 10px; margin: 10px 0; }
-
-        /* Estilo da Tela de Frases */
-        .tela-preta { background: #000 !important; color: #fff !important; text-align: center; justify-content: center; align-items: center; padding: 40px; }
-        .frase-texto { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; margin-bottom: 20px; line-height: 1.4; }
-        .frase-autor { color: var(--brilho); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; }
-  font[face="Playfair Display"] { font-family: 'Playfair Display', serif; }
-font[face="Roboto Mono"] { font-family: 'Roboto Mono', monospace; }
-font[face="Dancing Script"] { font-family: 'Dancing Script', cursive; }
-  font[face="Playfair Display"] { font-family: 'Playfair Display', serif; }
-font[face="Roboto Mono"] { font-family: 'Roboto Mono', monospace; }
-font[face="Dancing Script"] { font-family: 'Dancing Script', cursive; }
-        
+        #area-nota ul, #area-nota ol { margin-left: 20px; }
     </style>
 </head>
-<body data-tema="escuro">
+<body id="main-body">
 
-    <div id="tela-login" class="tela ativa flex-center">
-        <div class="login-box">
-            <h1 style="font-family:'Playfair Display'; font-size: 2.8rem; letter-spacing: -1px;">Aetheria</h1>
-            <p style="opacity:0.6; font-size: 0.8rem; letter-spacing: 2px;">JEFFERSON DIAS SOFTWARE</p>
-            <input type="text" id="user-input" style="width:100%; padding:15px; margin-top:25px; border-radius:12px; border:1px solid var(--borda); background:rgba(0,0,0,0.2); color:white; text-align:center; outline: none;" placeholder="Seu nome">
-            <button onclick="app.fazerLogin()" style="width:100%; padding:15px; margin-top:10px; border-radius:12px; background:var(--brilho); color:white; border:none; font-weight:800; cursor: pointer;">ENTRAR NO SISTEMA</button>
-            <div class="google-btn" onclick="app.fazerLogin()">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18"> Google Login
-            </div>
+    <div class="bg-glow"></div>
+
+    <div id="tela-login" class="tela ativa" style="justify-content:center; align-items:center; text-align:center;">
+        <div class="logo-v">V</div>
+        <p style="letter-spacing: 10px; font-weight: 300; margin-bottom: 40px; color: var(--primary);">VICTORY NOTES</p>
+        <input type="text" id="user-name" class="input-premium" placeholder="Seu nome, campeão">
+        <button onclick="app.login()" class="btn-premium">Acessar</button>
+    </div>
+
+    <div id="tela-saudacao" class="tela" style="justify-content:center; align-items:center; text-align:center;">
+        <div class="frase-container" style="opacity: 1;">
+            <i class="fa-solid fa-quote-left" style="color: var(--primary); font-size: 2rem; margin-bottom: 20px;"></i>
+            <h2 id="txt-frase" style="font-weight: 300; line-height: 1.5; font-size: 1.8rem; font-style: italic;"></h2>
+            <p id="txt-autor" style="color: var(--primary); margin-top: 30px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; font-size: 0.7rem;"></p>
         </div>
     </div>
 
-    <div id="tela-frase" class="tela tela-preta">
-        <div>
-            <i class="fa-solid fa-quote-left" style="color: var(--brilho); font-size: 2rem; margin-bottom: 30px; display: block;"></i>
-            <div id="msg-frase" class="frase-texto"></div>
-            <div id="msg-autor" class="frase-autor"></div>
-        </div>
+    <div id="tela-welcome" class="tela" style="justify-content:center; align-items:center; text-align:center;">
+        <h1 id="welcome-msg" style="font-size: 2.2rem; font-weight: 900; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></h1>
+        <p style="margin-top: 15px; opacity: 0.7; font-size: 1.1rem;">O que vamos anotar hoje?</p>
     </div>
 
     <div id="tela-dash" class="tela">
-        <div class="header">
-            <div>
-                <h2 id="ola-user">Olá</h2>
-                <small id="data-acesso" style="color:var(--brilho); font-weight: 700; font-size: 0.6rem; text-transform: uppercase;"></small>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <button class="btn-t" onclick="app.alternarTema()"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <button class="btn-t" onclick="app.fazerLogout()"><i class="fa-solid fa-power-off" style="color: #ef4444;"></i></button>
-            </div>
-        </div>
-        
-        <div style="padding:20px;">
-            <button onclick="app.novaNota()" style="width:100%; padding:22px; border-radius:15px; background:linear-gradient(135deg, var(--brilho), #6366f1); color:white; border:none; font-weight:800; box-shadow: 0 10px 20px rgba(14,165,233,0.2);">+ NOVA NOTA EM BRANCO</button>
-        </div>
-        
-        <p style="padding: 0 20px; font-size: 0.7rem; font-weight: 800; opacity: 0.5;">MODELOS RÁPIDOS</p>
-        <div class="grid">
-            <div class="card-nota" onclick="app.novaNota('Diário de Hoje', '📅 Data: \n✨ O que aconteceu de bom: \n💡 Lição do dia:')">
-                <h4>📖 Diário</h4>
-            </div>
-            <div class="card-nota" onclick="app.novaNota('Lista de Tarefas', '✅ Tarefa 1\n✅ Tarefa 2\n✅ Tarefa 3')">
-                <h4>✔️ Checklist</h4>
-            </div>
-            <div class="card-nota" onclick="app.novaNota('Ata de Reunião', '👥 Participantes: \n📌 Pautas: \n🚀 Próximos passos:')">
-                <h4>🤝 Reunião</h4>
+        <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="font-weight: 900; letter-spacing: -1px;">Victory Notes</h2>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <button onclick="app.toggleTheme()" style="background:none; border:none; color: var(--primary); font-size: 1.2rem; cursor:pointer;" id="theme-icon">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button onclick="app.logout()" style="color: #ef4444; background:none; border:none; font-size: 1.2rem; cursor:pointer;"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </div>
-
-        <p style="padding: 0 20px; font-size: 0.7rem; font-weight: 800; opacity: 0.5; margin-top: 15px;">NOTAS SALVAS</p>
-        <div id="grade-notas" class="grid"></div>
+        <div style="padding: 0 20px 20px 20px;">
+            <button onclick="app.novaNota()" class="btn-premium" style="max-width: none;">+ Nova Anotação</button>
+        </div>
+        <div id="lista-notas" class="grid-notas"></div>
     </div>
 
-    <div id="tela-editor" class="tela">
-        <div class="toolbar">
-    <button class="btn-t" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
-    
-    <div class="group">
-        <select class="input-inline" style="width:90px" onchange="app.exec('fontName', this.value); document.getElementById('area-texto').focus();">
-            <option value="Plus Jakarta Sans">Padrão</option>
-            <option value="Playfair Display">Elegante</option>
-            <option value="Roboto Mono">Código</option>
-            <option value="Dancing Script">Manuscrita</option>
-        </select>
+    <div id="tela-editor" class="tela" style="padding: 0;">
+        <div class="top-bar">
+            <button class="btn-tool" onclick="app.voltar()"><i class="fa-solid fa-chevron-left"></i></button>
+            
+            <div class="tool-group">
+                <button class="btn-tool" onclick="app.exec('bold')" title="Negrito"><i class="fa-solid fa-bold"></i></button>
+                <button class="btn-tool" onclick="app.exec('underline')" title="Sublinhado"><i class="fa-solid fa-underline"></i></button>
+            </div>
+
+            <div class="tool-group">
+                <button class="btn-tool" onclick="app.ajustarFonte(8)" title="Super Aumentar"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn-tool" onclick="app.ajustarFonte(-8)" title="Super Diminuir"><i class="fa-solid fa-minus"></i></button>
+            </div>
+
+            <div class="tool-group">
+                <button class="btn-tool" onclick="app.ciclarAlinhamento()" title="Alinhamento" id="btn-align">
+                    <i class="fa-solid fa-align-left"></i>
+                </button>
+                <button class="btn-tool" onclick="app.toggleMargem()" title="Ajustar Margem"><i class="fa-solid fa-arrows-left-right"></i></button>
+            </div>
+
+            <div class="tool-group">
+                <button class="btn-tool" onclick="app.exec('insertUnorderedList')" title="Lista"><i class="fa-solid fa-list-ul"></i></button>
+                <button class="btn-tool" onclick="app.exec('insertOrderedList')" title="Numeração"><i class="fa-solid fa-list-ol"></i></button>
+            </div>
+
+            <div class="tool-group">
+                <input type="color" title="Cor da Letra" oninput="app.exec('foreColor', this.value)" style="width:30px; height:30px; border:none; background:none; cursor:pointer;">
+                <button class="btn-tool" onclick="app.mudarFundoNota()" title="Fundo da Nota"><i class="fa-solid fa-palette"></i></button>
+                <button class="btn-tool" onclick="document.getElementById('input-foto').click()" title="Inserir Foto"><i class="fa-solid fa-image"></i></button>
+            </div>
+
+            <button class="btn-tool" onclick="app.exportarPDF()" style="margin-left:auto; color: var(--primary);"><i class="fa-solid fa-share-nodes"></i></button>
+            <button class="btn-tool" onclick="app.excluir()" style="color: #ef4444;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+
+        <input type="text" id="input-titulo" placeholder="Título do Pensamento" oninput="app.salvar()">
         
-        <button class="btn-t" onclick="app.ajustarFonte(-2)"><i class="fa-solid fa-minus"></i></button>
-        <span id="font-size-val" style="font-weight: 800; font-size: 0.8rem; width: 20px; text-align: center;">18</span>
-        <button class="btn-t" onclick="app.ajustarFonte(2)"><i class="fa-solid fa-plus"></i></button>
+        <div class="nota-container">
+            <div id="area-nota" contenteditable="true" oninput="app.salvar()" spellcheck="false"></div>
+        </div>
+
+        <div class="footer">
+            <div id="count-info">Letras: 0</div>
+            <div>DESENVOLVIDO POR JEFFERSON DIAS</div>
+        </div>
     </div>
 
-            <div class="group">
-                <button class="btn-t" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
-                <button class="btn-t" onclick="app.exec('italic')"><i class="fa-solid fa-italic"></i></button>
-                <button class="btn-t" onclick="app.exec('underline')"><i class="fa-solid fa-underline"></i></button>
-            </div>
+    <input type="file" id="input-foto" hidden accept="image/*" onchange="app.importarFoto(event)">
 
-            <div class="group">
-                <input type="color" class="c-picker" onchange="app.exec('foreColor', this.value)" title="Cor da Letra">
-                <input type="color" class="c-picker" onchange="app.exec('backColor', this.value)" title="Grifar Texto">
-                <input type="color" class="c-picker" onchange="app.mudarFundoNota(this.value)" title="Fundo da Nota">
-            </div>
-
-            <div class="group">
-                <button class="btn-t" onclick="app.exec('insertUnorderedList')"><i class="fa-solid fa-list"></i></button>
-                <button class="btn-t" onclick="app.addFoto()"><i class="fa-solid fa-image"></i></button>
-                <button class="btn-t" onclick="app.compartilhar()"><i class="fa-solid fa-share-nodes"></i></button>
-            </div>
-
-            <button class="btn-t" style="margin-left:auto" onclick="app.exportarPDF()"><i class="fa-solid fa-file-pdf"></i></button>
-            <button class="btn-t" onclick="app.excluir()"><i class="fa-solid fa-trash" style="color:#ef4444"></i></button>
-        </div>
-
-        <div id="editor-container">
-            <input type="text" id="titulo-nota" oninput="app.salvar()" placeholder="Título...">
-            <div id="area-texto" contenteditable="true" oninput="app.salvar()"></div>
-        </div>
+    <div id="float-menu">
+        <button class="btn-tool" onclick="app.exec('bold')"><i class="fa-solid fa-bold"></i></button>
+        <button class="btn-tool" onclick="app.ajustarFonte(10)"><i class="fa-solid fa-plus"></i></button>
+        <button class="btn-tool" onclick="app.exec('backColor', '#fbbf24')"><i class="fa-solid fa-highlighter"></i></button>
     </div>
 
     <script>
-        const app = {
-            db: JSON.parse(localStorage.getItem('aether_v4_db')) || [],
-            user: localStorage.getItem('aether_user'),
-            tema: localStorage.getItem('aether_tema') || 'escuro',
-            idAtual: null,
-            fSize: 18,
+    const app = {
+        db: JSON.parse(localStorage.getItem('victory_v9')) || [],
+        user: localStorage.getItem('v_user_name'),
+        id: null,
+        coresFundo: ['#ffffff', '#fefce8', '#f0fdf4', '#eff6ff', '#fff1f2', '#111827'],
+        margens: ['30px', '60px', '100px', '15px'],
+        alinhamentos: ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+        iconesAlinhamento: ['fa-align-left', 'fa-align-center', 'fa-align-right', 'fa-align-justify'],
+        idxCor: 0,
+        idxMargem: 0,
+        idxAlign: 0,
 
-            init() {
-                this.aplicarTema();
-                if (this.user) { this.renderDash(); this.irPara('tela-dash'); }
-            },
+        init() {
+            this.applySavedTheme();
+            if (this.user) this.saudacao();
+            else this.nav('tela-login');
+            this.configFloat();
+            document.execCommand('styleWithCSS', false, true);
+        },
 
-            irPara(id) {
-                document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
-                document.getElementById(id).classList.add('ativa');
-            },
+        nav(id) {
+            document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+            document.getElementById(id).classList.add('ativa');
+        },
 
-            alternarTema() {
-                this.tema = this.tema === 'escuro' ? 'claro' : 'escuro';
-                localStorage.setItem('aether_tema', this.tema);
-                this.aplicarTema();
-            },
+        toggleTheme() {
+            const isLight = document.getElementById('main-body').classList.toggle('light-mode');
+            localStorage.setItem('v_theme', isLight ? 'light' : 'dark');
+            this.updateThemeIcon(isLight);
+        },
 
-            aplicarTema() { document.body.setAttribute('data-tema', this.tema); },
+        applySavedTheme() {
+            const savedTheme = localStorage.getItem('v_theme');
+            if (savedTheme === 'light') {
+                document.getElementById('main-body').classList.add('light-mode');
+                this.updateThemeIcon(true);
+            }
+        },
 
-            fazerLogin() {
-                const n = document.getElementById('user-input').value;
-                if(!n) return alert("Por favor, digite seu nome.");
-                this.user = n;
-                localStorage.setItem('aether_user', n);
-                this.animarFrase("entrada");
-            },
+        updateThemeIcon(isLight) {
+            const icon = document.querySelector('#theme-icon i');
+            icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        },
 
-            fazerLogout() {
-                if(confirm("Deseja desconectar do Aetheria?")) this.animarFrase("saida");
-            },
+        login() {
+            const n = document.getElementById('user-name').value;
+            if (!n) return;
+            this.user = n;
+            localStorage.setItem('v_user_name', n);
+            this.saudacao();
+        },
 
-            animarFrase(tipo) {
-                const frases = [
-                    {t: "A escrita é a pintura da voz.", a: "Voltaire"},
-                    {t: "Sua mente é um universo de infinitas ideias.", a: "Aetheria"},
-                    {t: "O que não é escrito, é esquecido.", a: "Jefferson Dias"},
-                    {t: "A persistência é o caminho do êxito.", a: "Charles Chaplin"},
-                    {t: "Ideias mudam o mundo.", a: "Aetheria Ultra"}
-                ];
-                const f = frases[Math.floor(Math.random()*frases.length)];
-                document.getElementById('msg-frase').innerText = `"${f.t}"`;
-                document.getElementById('msg-autor').innerText = f.a;
-                
-                this.irPara('tela-frase');
-                
-                setTimeout(() => {
-                    if(tipo === "entrada") { 
-                        this.renderDash(); 
-                        this.irPara('tela-dash'); 
-                    } else { 
-                        localStorage.removeItem('aether_user'); 
-                        location.reload(); 
-                    }
-                }, 2800);
-            },
+        saudacao() {
+            this.nav('tela-saudacao');
+            const frases = [
+                {t: "A maior vitória é vencer a si mesmo todos os dias.", a: "Platão"},
+                {t: "O sucesso é a soma de pequenos esforços repetidos.", a: "Robert Collier"},
+                {t: "Sua história é escrita por você.", a: "Victory Notes"}
+            ];
+            const s = frases[Math.floor(Math.random() * frases.length)];
+            document.getElementById('txt-frase').innerText = s.t;
+            document.getElementById('txt-autor').innerText = s.a;
 
-            renderDash() {
-                document.getElementById('ola-user').innerText = `Olá, ${this.user}`;
-                document.getElementById('data-acesso').innerText = `Sessão: ${new Date().toLocaleDateString()} às ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
-                const grade = document.getElementById('grade-notas');
-                grade.innerHTML = this.db.map(n => `
-                    <div class="card-nota" onclick="app.abrirNota(${n.id})" style="background:${n.bg || 'var(--card)'}">
-                        <h4 style="color:var(--brilho)">${n.tit || 'Nota vazia'}</h4>
-                        <small style="opacity:0.5; font-size: 0.6rem;">${n.data}</small>
-                    </div>
-                `).join('');
-            },
+            setTimeout(() => {
+                this.nav('tela-welcome');
+                document.getElementById('welcome-msg').innerText = `Seja bem-vindo, ${this.user}!`;
+                setTimeout(() => { this.renderDash(); this.nav('tela-dash'); }, 2500);
+            }, 3000);
+        },
 
-            novaNota(tit = '', txt = '') {
-                const id = Date.now();
-                this.db.unshift({ id, tit, txt, data: new Date().toLocaleDateString(), bg: '' });
-                this.abrirNota(id);
-            },
+        renderDash() {
+            const lista = document.getElementById('lista-notas');
+            lista.innerHTML = this.db.map(n => `
+                <div class="card-nota" onclick="app.abrir(${n.id})">
+                    <strong style="color:var(--primary);">${n.tit || 'Sem título'}</strong>
+                    <p style="font-size: 0.7rem; opacity: 0.4; margin-top: 10px;">${n.data}</p>
+                </div>
+            `).join('');
+        },
 
-            abrirNota(id) {
-                this.idAtual = id;
-                const n = this.db.find(x => x.id === id);
-                document.getElementById('titulo-nota').value = n.tit;
-                const editor = document.getElementById('area-texto');
-                editor.innerHTML = n.txt;
-                document.getElementById('editor-container').style.background = n.bg || 'transparent';
-                this.irPara('tela-editor');
-            },
+        novaNota() {
+            const id = Date.now();
+            this.db.unshift({ id, tit: '', txt: '', data: new Date().toLocaleDateString(), bg: '#ffffff', margem: '30px' });
+            this.abrir(id);
+        },
 
-            salvar() {
-                const n = this.db.find(x => x.id === this.idAtual);
-                if (n) {
-                    n.tit = document.getElementById('titulo-nota').value;
-                    n.txt = document.getElementById('area-texto').innerHTML;
-                    localStorage.setItem('aether_v4_db', JSON.stringify(this.db));
+        abrir(id) {
+            this.id = id;
+            const n = this.db.find(x => x.id === id);
+            document.getElementById('input-titulo').value = n.tit;
+            document.getElementById('area-nota').innerHTML = n.txt;
+            document.getElementById('area-nota').style.background = n.bg || '#ffffff';
+            document.getElementById('area-nota').style.padding = n.margem || '30px';
+            document.getElementById('area-nota').style.color = (n.bg === '#111827') ? '#fff' : '#000';
+            this.nav('tela-editor');
+            this.updateStats();
+        },
+
+        exec(cmd, val = null) {
+            document.getElementById('area-nota').focus();
+            document.execCommand('styleWithCSS', false, true);
+            document.execCommand(cmd, false, val);
+            this.salvar();
+        },
+
+        // FUNÇÃO PARA CICLAR ENTRE OS ALINHAMENTOS
+        ciclarAlinhamento() {
+            this.idxAlign = (this.idxAlign + 1) % this.alinhamentos.length;
+            const cmd = this.alinhamentos[this.idxAlign];
+            this.exec(cmd);
+            
+            // Atualiza o ícone do botão
+            const btnIcon = document.querySelector('#btn-align i');
+            btnIcon.className = 'fa-solid ' + this.iconesAlinhamento[this.idxAlign];
+        },
+
+        ajustarFonte(step) {
+            document.getElementById('area-nota').focus();
+            const sel = window.getSelection();
+            if (!sel.rangeCount) return;
+            const range = sel.getRangeAt(0);
+            
+            if (sel.toString().length === 0) {
+                const span = document.createElement('span');
+                let currentSize = window.getComputedStyle(sel.anchorNode.parentElement).fontSize;
+                span.style.fontSize = (parseInt(currentSize) + step) + "px";
+                span.innerHTML = "&#8203;"; 
+                range.insertNode(span);
+                const newRange = document.createRange();
+                newRange.setStart(span, 1);
+                newRange.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(newRange);
+            } else {
+                const span = document.createElement('span');
+                let parent = sel.anchorNode.parentElement;
+                let currentSize = window.getComputedStyle(parent).fontSize;
+                span.style.fontSize = (parseInt(currentSize) + step) + "px";
+                span.appendChild(range.extractContents());
+                range.insertNode(span);
+            }
+            this.salvar();
+        },
+
+        toggleMargem() {
+            this.idxMargem = (this.idxMargem + 1) % this.margens.length;
+            const novaMargem = this.margens[this.idxMargem];
+            document.getElementById('area-nota').style.padding = novaMargem;
+            this.salvar();
+        },
+
+        mudarFundoNota() {
+            this.idxCor = (this.idxCor + 1) % this.coresFundo.length;
+            const cor = this.coresFundo[this.idxCor];
+            const area = document.getElementById('area-nota');
+            area.style.background = cor;
+            area.style.color = (cor === '#111827') ? '#fff' : '#000';
+            this.salvar();
+        },
+
+        importarFoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = `<img src="${event.target.result}" style="max-width:100%; border-radius:10px; margin:10px 0;"><div><br></div>`;
+                this.exec('insertHTML', img);
+            };
+            reader.readAsDataURL(file);
+        },
+
+        salvar() {
+            const n = this.db.find(x => x.id === this.id);
+            if (n) {
+                n.tit = document.getElementById('input-titulo').value;
+                n.txt = document.getElementById('area-nota').innerHTML;
+                n.bg = document.getElementById('area-nota').style.background;
+                n.margem = document.getElementById('area-nota').style.padding;
+                localStorage.setItem('victory_v9', JSON.stringify(this.db));
+                this.updateStats();
+            }
+        },
+
+        updateStats() {
+            const c = document.getElementById('area-nota').innerText.length;
+            document.getElementById('count-info').innerText = `Letras: ${c}`;
+        },
+
+        async exportarPDF() {
+            const el = document.getElementById('area-nota');
+            const tit = document.getElementById('input-titulo').value || 'Victory_Note';
+            const opt = { 
+                margin: 10, 
+                filename: tit + '.pdf', 
+                html2canvas: { scale: 2, useCORS: true }, 
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+            };
+
+            try {
+                const pdfBlob = await html2pdf().from(el).set(opt).output('blob');
+                const file = new File([pdfBlob], tit + ".pdf", { type: "application/pdf" });
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ files: [file], title: tit });
+                } else {
+                    html2pdf().from(el).set(opt).save();
                 }
-            },
+            } catch (err) {
+                html2pdf().from(el).set(opt).save();
+            }
+        },
 
-            exec(c, v = null) { document.execCommand(c, false, v); this.salvar(); },
+        configFloat() {
+            const m = document.getElementById('float-menu');
+            document.addEventListener('mouseup', (e) => {
+                const s = window.getSelection();
+                if (s.toString().length > 0) {
+                    const r = s.getRangeAt(0).getBoundingClientRect();
+                    m.style.display = 'flex';
+                    m.style.top = (window.scrollY + r.top - 60) + 'px';
+                    m.style.left = (window.scrollX + r.left) + 'px';
+                } else m.style.display = 'none';
+            });
+        },
 
-            ajustarFonte(v) {
-                this.fSize += v;
-                document.getElementById('area-texto').style.fontSize = this.fSize + 'px';
-                document.getElementById('font-size-val').innerText = this.fSize;
-            },
+        excluir() {
+            if(confirm("Apagar esta nota?")) {
+                this.db = this.db.filter(x => x.id !== this.id);
+                localStorage.setItem('victory_v9', JSON.stringify(this.db));
+                this.voltar();
+            }
+        },
 
-            mudarFundoNota(cor) {
-                const n = this.db.find(x => x.id === this.idAtual);
-                n.bg = cor;
-                document.getElementById('editor-container').style.background = cor;
-                this.salvar();
-            },
+        voltar() { this.renderDash(); this.nav('tela-dash'); },
+        logout() { localStorage.clear(); location.reload(); }
+    };
 
-            addFoto() {
-                const url = prompt("Link da imagem (URL):");
-                if(url) this.exec('insertImage', url);
-            },
-
-            async compartilhar() {
-                const n = this.db.find(x => x.id === this.idAtual);
-                if (navigator.share) await navigator.share({ title: n.tit, text: document.getElementById('area-texto').innerText });
-            },
-
-            exportarPDF() {
-                const element = document.getElementById('editor-container');
-                html2pdf().from(element).save('Aetheria_Documento.pdf');
-            },
-
-            voltar() { this.renderDash(); this.irPara('tela-dash'); },
-            excluir() { if(confirm("Deseja apagar esta nota?")) { this.db = this.db.filter(x => x.id !== this.idAtual); localStorage.setItem('aether_v4_db', JSON.stringify(this.db)); this.voltar(); } }
-        };
-        app.init();
+    window.onload = () => app.init();
     </script>
 </body>
-    </html>
-            
+</html>
 
 
